@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css'
-import Defaultlayout from './templates/Default'
+import Defaultlayout from './templates/antd/Default'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './routes';
 import { RoutesInterface } from './routes/routes';
@@ -11,11 +11,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Defaultlayout />}>
-          {routes.map((route: RoutesInterface) => {
+          {routes.map((route: RoutesInterface, i: number) => {
             return (
               route.path ?
-              <Route path={route.path} element={route.element} /> 
-              : <Route index element={route.element}/>
+              <Route key={i} path={route.path} element={route.element} /> 
+              : <Route key={i} index element={route.element}/>
             )
             })
           }
