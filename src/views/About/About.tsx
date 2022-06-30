@@ -1,8 +1,6 @@
 import React from 'react'
-import { Card } from 'antd'
+import santiImgUrl from '@src/public/img/santi-pic.png';
 import './style.css';
-
-import santiImgUrl from '@/public/img/santi-pic.png';
 
 const About = () => {
   return (
