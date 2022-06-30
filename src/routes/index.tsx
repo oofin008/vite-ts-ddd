@@ -3,6 +3,7 @@ import {
   HomeComponent,
   AboutComponent,
   ContactComponent,
+  EntryComponent,
   NotFoundComponent
 } from '../views';
 
@@ -11,6 +12,7 @@ const routes: RoutesInterface[] = [
   { path: '', element: <HomeComponent />, permission: RoutePermission.Public },
   { path: 'about', element: <AboutComponent />, permission: RoutePermission.Public },
   { path: 'contact', element: <ContactComponent />, permission: RoutePermission.Admin },
+  { path: 'entry', element: <EntryComponent />, permission: RoutePermission.Public },
   { path: '*', element: <NotFoundComponent />, permission: RoutePermission.Public },
 ];
 
