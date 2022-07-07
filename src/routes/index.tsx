@@ -5,7 +5,7 @@ import {
   ContactComponent,
   EntryComponent,
   NotFoundComponent
-} from '../views';
+} from '@/views';
 
 // can use useRoutes to render the correct component based on the path
 const routes: RoutesInterface[] = [
