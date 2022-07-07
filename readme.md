@@ -12,3 +12,5 @@
   - utils
   - views --> for page view content
 
+# Test Admin for firebase login (temp gonna delete)
+santi@admin.com P@ssw0rd
