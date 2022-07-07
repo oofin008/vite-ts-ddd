@@ -1,5 +1,5 @@
 import React from 'react'
-import santiImgUrl from '@src/public/img/santi-pic.png';
+import santiImgUrl from '@/public/img/santi-pic.png';
 import './style.css';
 
 const About = () => {

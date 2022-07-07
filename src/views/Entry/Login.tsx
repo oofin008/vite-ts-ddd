@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { signup } from '../../logic/auth/firebaseImpl';
+import { signup, signin } from '@/core/domains/auth/firebaseImpl';
 import './login.css';
 
 const Login = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    signup({email: values.username, password: values.password});
+  const [isLoading, setLoading] = useState(false);
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    try {
+      console.log('Success:', values);
+      await signin({ email: values.username, password: values.password });
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -15,66 +23,55 @@ const Login = () => {
 
   return (
     <Form
-      name="basic"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
+      name="normal_login"
+      className="login-form"
       initialValues={{
         remember: true,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      autoComplete="off"
     >
       <Form.Item
-        label="Username"
         name="username"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: 'Please input your Username!',
           },
         ]}
       >
-        <Input className='w-250' />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
       </Form.Item>
-
       <Form.Item
-        label="Password"
         name="password"
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: 'Please input your Password!',
           },
         ]}
       >
-        <Input.Password className='w-250' />
+        <Input
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Password"
+        />
+      </Form.Item>
+      <Form.Item>
+        <Form.Item name="remember" valuePropName="checked" noStyle>
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <a className="login-form-forgot" href="">
+          Forgot password
+        </a>
       </Form.Item>
 
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form-button" loading={isLoading}>
+          Log in
         </Button>
+        Or <a href="">register now!</a>
       </Form.Item>
     </Form>
   )
