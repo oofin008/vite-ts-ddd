@@ -1,6 +1,7 @@
 import React from 'react';
 import { assign, createMachine, Sender } from 'xstate';
 import { AuthenticationMachineContext, AuthenticationMachineEvent } from './authState';
+import { firebaseAuthImpl } from '@/core/domains/auth/firebaseAuthImpl';
 
 // to visualize state machine use cmd+p >xstate: open inspector
 export const authenticationMachine = createMachine<
@@ -14,6 +15,7 @@ export const authenticationMachine = createMachine<
       checkingIfLoggedIn: {
         invoke: {
           src: 'checkIfLoggedIn',
+          onDone: { target: 'loggedIn', actions: 'assignUserDetailsToContext' },
           onError: {
             target: 'loggedOut',
           },
@@ -33,8 +35,9 @@ export const authenticationMachine = createMachine<
           },
         },
       },
+      loggingOut: {},
       loggedOut: {
-        entry: ['navigateToAuthPage', 'clearUserDetailsFromContext'],
+        entry: ['logOutFirebase', 'navigateToAuthPage', 'clearUserDetailsFromContext'],
         on: {
           LOG_IN: {
             target: 'loggedIn',
@@ -46,22 +49,12 @@ export const authenticationMachine = createMachine<
   },
   {
     services: {
-      checkIfLoggedIn: () => async (
+      checkIfLoggedIn: (ctx, event) => async (
         send: Sender<AuthenticationMachineEvent>,
       ) => {
         // Perform some async check here
-        // if (isLoggedIn) {
-        //   send({
-        //     type: "REPORT_IS_LOGGED_IN",
-        //     userDetails: {
-        //       username: "mpocock1",
-        //     },
-        //   });
-        // } else {
-        //   send({
-        //     type: "REPORT_IS_LOGGED_OUT",
-        //   });
-        // }
+        console.log('checking: ', {ctx, event});
+        return firebaseAuthImpl.checkIfLoggedIn()
       },
     },
     actions: {
@@ -70,16 +63,21 @@ export const authenticationMachine = createMachine<
         // should take them to the /auth route
       },
       assignUserDetailsToContext: assign((context, event) => {
+        console.log('assing: ', {context, event});
         if (event.type !== 'REPORT_IS_LOGGED_IN') {
           return {};
         }
         return {
-          userDetails: event.userDetails,
+          userDetails: event.data,
         };
       }),
       clearUserDetailsFromContext: assign((context, event) => {
        return { userDetails: undefined };
       }),
+      logOutFirebase: async (context, event) => {
+        console.log('AuthMachine Logging Out: ', {context, event});
+        firebaseAuthImpl.logOut();
+      }
     },
   },
 );

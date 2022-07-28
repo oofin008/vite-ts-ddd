@@ -7,9 +7,9 @@ export interface UserDetails {
 }
 
 export type AuthenticationMachineEvent =
-  | {
+    {
       type: 'REPORT_IS_LOGGED_IN';
-      userDetails: UserDetails;
+      data: UserDetails;
     }
   | {
       type: 'REPORT_IS_LOGGED_OUT';
@@ -19,5 +19,5 @@ export type AuthenticationMachineEvent =
     }
   | {
       type: 'LOG_IN';
-      userDetails: UserDetails;
+      data: UserDetails;
     };
