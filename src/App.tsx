@@ -9,6 +9,7 @@ import { RoutesInterface } from './routes/routes';
 
 function App() {
   const [state, send, service] = useMachine(authenticationMachine);
+  // TODO: create interface for authMachine Context and change to object
   const authMachine = [state, send, service];
 
   return (
