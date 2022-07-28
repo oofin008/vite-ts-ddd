@@ -23,8 +23,15 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-.menu-right {
+.menu {
   justify-content: flex-end;
+}
+
+.avatar-group {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: right;
 }
 
 .ant-row-rtl .logo {
