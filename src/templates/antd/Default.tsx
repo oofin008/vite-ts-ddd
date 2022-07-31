@@ -2,20 +2,11 @@ import React, { useContext, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Breadcrumb, Layout, Menu, Avatar, Col, Row, Dropdown, Button } from 'antd'
 import { UserOutlined } from '@ant-design/icons';
-import './default.css';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
+import UserMenu from './UserMenu';
+import './default.css';
 
 
-// TODO: refactor, seperate component
-const userMenu = (
-  <Menu
-    items={[
-      { key: '1', label: (<a target='_blank'>Profile</a>) },
-      { key: '2', label: (<a target='_blank'>Setting</a>) },
-      { key: '3', label: (<a target='_blank'>Log out</a>) },
-    ]}
-  />
-)
 // Layout is defined here, 
 // Navbar, Sidebar, Main, Footer should be here
 const Defaultlayout = () => {
@@ -52,7 +43,7 @@ const Defaultlayout = () => {
               }
               {
                 state.matches('loggedIn') &&
-                <Dropdown overlay={userMenu}>
+                <Dropdown overlay={<UserMenu/>}>
                   <Button shape='circle' ghost icon={<UserOutlined />}></Button>
                 </Dropdown>
               }
