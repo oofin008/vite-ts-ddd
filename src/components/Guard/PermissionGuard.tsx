@@ -2,17 +2,17 @@ import React, { useContext, useEffect } from 'react'
 import { Spin } from 'antd'
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine'
 
-// TODO: Rewrite, redesign Permission Guard
 export const PermissionGuard = (props: any) => {
   const [state, send, service] = useContext(AuthMachineContext);
 
   return (
     <>
-      {state.matches('loggedOut') ?
-        <Spin tip="Loading...">
-          {props.children}
-        </Spin> :
+      {state.matches('checkingIfLoggedIn') && <Spin tip='Loading...' />}
+      {state.matches('loggedIn') &&
         <div>{props.children}</div>
+      }
+      {state.matches('loggedOut') &&
+        <div>You have been logged out, please re-loggin to access this content.</div>
       }
     </>
   )
