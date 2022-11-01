@@ -1,6 +1,6 @@
 import React from 'react'
 import santiImgUrl from '@/public/img/santi-pic.png';
-import './style.css';
+import './style.less';
 
 const About = () => {
   return (
