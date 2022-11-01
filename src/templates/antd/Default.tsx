@@ -16,7 +16,7 @@ const Defaultlayout = () => {
 
   return (
     <Layout className='layout'>
-
+      {/* NAV MENU */}
       <Header className='header'>
         <Row>
           <Col lg={4} md={5} sm={0} xs={0}><div className='logo' /></Col>
