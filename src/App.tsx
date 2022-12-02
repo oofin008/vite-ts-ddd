@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css'
+import './App.less'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useMachine } from '@xstate/react';
 import { authenticationMachine, AuthMachineContext } from './core/presentation/auth/authMachine';

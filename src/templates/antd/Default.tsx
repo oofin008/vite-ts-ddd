@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Breadcrumb, Layout, Menu, Avatar, Col, Row, Dropdown, Button } from 'antd'
+import { Layout, Menu, Col, Row, Dropdown, Button } from 'antd'
 import { UserOutlined } from '@ant-design/icons';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
 import UserMenu from './UserMenu';
-import './default.css';
+import './default.less';
 
 
 // Layout is defined here, 
@@ -43,7 +43,7 @@ const Defaultlayout = () => {
               }
               {
                 state.matches('loggedIn') &&
-                <Dropdown overlay={<UserMenu/>}>
+                <Dropdown overlay={<UserMenu />}>
                   <Button shape='circle' ghost icon={<UserOutlined />}></Button>
                 </Dropdown>
               }
@@ -52,23 +52,12 @@ const Defaultlayout = () => {
         </Row>
       </Header>
 
-      <Content style={{ padding: '0 50px' }}>
-        <Breadcrumb
-          style={{
-            margin: '16px 0',
-          }}
-        >
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
-        <div className='site-layout-content'>
-          <Outlet />
-        </div>
+      <Content style={{ padding: '50px 50px' }}>
+        <Outlet />
       </Content>
 
       <Footer style={{ textAlign: 'center' }}>
-        Ant Design ©2018 Created by Ant UED
+        Santi Personal dashboard
       </Footer>
     </Layout>
   )

@@ -29,10 +29,12 @@ export default ({ mode }) => {
       preprocessorOptions: {
         less: {
           modifyVars: {
-            'text-color': 'rgba(0, 0, 0, 0.65)',
-            'text-color-secondary': 'rgba(0, 0, 0, 0.45)',
-            'primary-color': 'red',
-            'layout-header-background': 'none'
+            // 'text-color': 'rgba(0, 0, 0, 0.65)',
+            // 'text-color-secondary': 'rgba(0, 0, 0, 0.45)',
+            // 'primary-color': '#e7d6c4',
+            // 'layout-header-background': '#fcf9ee',
+            // 'layout-body-background': '#fcf9ee',
+            // 'menu-dark-color': 'rgba(0, 0, 0, 0.45)',
           },
           javascriptEnabled: true,
         }
