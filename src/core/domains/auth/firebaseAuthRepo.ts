@@ -1,20 +1,20 @@
 import { FirebaseApp, FirebaseOptions } from "firebase/app";
 import { UserCredential } from "firebase/auth";
 
-export interface signInParams {
+export interface SignInParams {
   email: string;
   password: string;
   isRememberMe: boolean;
 }
 
-export interface signUpParams extends signInParams {
+export interface SignUpParams extends SignInParams {
   // TODO: signUp data format
 }
 
-export interface authRepo {
+export interface IAuthRepo {
   // init(params: FirebaseOptions): Promise<void>;
   checkIfLoggedIn(): Promise<any>;
-  signUp(params: signUpParams): Promise<UserCredential | undefined>;
-  logIn(params: signInParams): Promise<UserCredential | undefined>;
+  signUp(params: SignUpParams): Promise<UserCredential | undefined>;
+  logIn(params: SignInParams): Promise<UserCredential | undefined>;
   logOut(): Promise<void>;
 }

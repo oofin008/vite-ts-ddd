@@ -15,6 +15,8 @@
   - templates --> define layout here
   - utils
   - views --> for page view content
+  - components --> shared component such as card, shelf etc.
+  - core --> define high-level (business logic) code here.
 
 # Test Admin for firebase login (temp gonna delete)
 santi@admin.com P@ssw0rd

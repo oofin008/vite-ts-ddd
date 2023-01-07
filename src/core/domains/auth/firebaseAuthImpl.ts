@@ -1,7 +1,7 @@
 import { initializeApp, FirebaseOptions } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, browserLocalPersistence, browserSessionPersistence,setPersistence, Auth, User, signOut } from 'firebase/auth';
 import { firebaseApp }  from '@/core/data/auth/firebaseAuth';
-import { authRepo, signInParams, signUpParams } from './firebaseAuthRepo';
+import { IAuthRepo, SignInParams, SignUpParams } from './firebaseAuthRepo';
 import { useAuthState } from '@/utils/useAuthState';
 import { authenticationMachine } from '@/core/presentation/auth/authMachine';
 import { ServiceMap } from 'xstate';
@@ -32,7 +32,7 @@ async function checkIfLoggedIn(): Promise<any> {
   })
 }
 
-async function signUp(params: signUpParams): Promise<UserCredential | undefined> {
+async function signUp(params: SignUpParams): Promise<UserCredential | undefined> {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, params.email, params.password);
     console.log('firebase signup success: ', userCredential);
@@ -42,18 +42,18 @@ async function signUp(params: signUpParams): Promise<UserCredential | undefined>
   }
 }
 
-async function logIn(params: signInParams): Promise<UserCredential | undefined> {
+async function logIn(params: SignInParams): Promise<UserCredential | undefined> {
   try {
     const { email, password, isRememberMe } = params;
     // set persistence type whether LocalStorage or Session
     // by default: firebase use LocalStorage to store
-    console.log(isRememberMe ? 'set local persistant':'set session persistant');
     await setPersistence(auth, (isRememberMe ? browserLocalPersistence : browserSessionPersistence));
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log('firebase login success: ', userCredential);
     return userCredential;
   } catch(error) {
     console.error('frebase login error: ', error);
+    throw error;
   }
 }
 
@@ -66,7 +66,7 @@ async function logOut(): Promise<void> {
   }
 }
 
-export const firebaseAuthImpl: authRepo = {
+export const firebaseAuthImpl: IAuthRepo = {
   signUp,
   logIn,
   checkIfLoggedIn,

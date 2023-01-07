@@ -1,23 +1,23 @@
+import { SignInParams } from "@/core/domains/auth/firebaseAuthRepo";
+
 export type AuthenticationMachineContext = {
   userDetails?: UserDetails;
+  signInParams?: SignInParams;
 };
 
 export interface UserDetails {
   username: string;
 }
 
+export interface Result {
+  isError: boolean;
+  message: string;
+}
+
+export type AuthEventList = 'LOG_IN' | 'LOG_OUT'
+
 export type AuthenticationMachineEvent =
     {
-      type: 'REPORT_IS_LOGGED_IN';
-      data: UserDetails;
-    }
-  | {
-      type: 'REPORT_IS_LOGGED_OUT';
-    }
-  | {
-      type: 'LOG_OUT';
-    }
-  | {
-      type: 'LOG_IN';
-      data: UserDetails;
+      type: AuthEventList;
+      data: AuthenticationMachineContext;
     };
