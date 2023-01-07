@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import { Spin } from 'antd'
+import { Alert, Spin } from 'antd'
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine'
 
 export const PermissionGuard = (props: any) => {
   const [state, send, service] = useContext(AuthMachineContext);
+  const { isLoginError } = state.context;
 
   return (
     <>
@@ -14,6 +15,7 @@ export const PermissionGuard = (props: any) => {
       {state.matches('loggedOut') &&
         <div>You have been logged out, please re-loggin to access this content.</div>
       }
+      {isLoginError && <Alert type="error" message="Login Error" banner closable/>}
     </>
   )
 }

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
+    "@firebase/firestore": "^3.7.3",
     "@react-three/drei": "^9.17.1",
     "@react-three/fiber": "^8.2.0",
     "@types/react-helmet": "^6.1.5",

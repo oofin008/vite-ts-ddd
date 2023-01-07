@@ -1,11 +1,11 @@
 import React from 'react';
 import fetchData from '@/utils/fetchData';
 
-const apiData = fetchData('http://localhost:1337/api/homepage');
+const apiData = fetchData('https://jsonplaceholder.typicode.com/todos/1');
 
 const Blog = () => {
   const data = apiData.read();
-
+  console.log(data);
   return (
     <div>{JSON.stringify(data)}</div>
   )

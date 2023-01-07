@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { Suspense, useContext, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Layout, Menu, Col, Row, Dropdown, Button } from 'antd'
+import { Layout, Menu, Col, Row, Dropdown, Button, Spin } from 'antd'
 import { UserOutlined } from '@ant-design/icons';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
 import UserMenu from './UserMenu';
@@ -53,7 +53,10 @@ const Defaultlayout = () => {
       </Header>
 
       <Content style={{ padding: '50px 50px' }}>
-        <Outlet />
+        {/* Wrap Outlet inside suspense for lazy loading page views */}
+        <Suspense fallback={<Spin tip='Loading...' />}>
+          <Outlet />
+        </Suspense>
       </Content>
 
       <Footer style={{ textAlign: 'center' }}>

@@ -4,25 +4,36 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { firebaseAuthImpl } from '@/core/domains/auth/firebaseAuthImpl';
 import './login.css';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
+import { SignInParams } from '@/core/domains/auth/firebaseAuthRepo';
 
 const Login = () => {
   const [ state, send, service ] = useContext(AuthMachineContext)
   const [isLoading, setLoading] = useState(false);
 
   const onFinish = async (values: any) => {
-    setLoading(true);
+    // TODO: check isLoading using Xstate
+    // setLoading(true);
     try {
-      console.log('Login Form Values:', values);
-      await firebaseAuthImpl.logIn({ email: values.username, password: values.password, isRememberMe: values.remember??false });
-      send('LOG_IN');
+      const params: SignInParams = {
+        email: values.username,
+        password: values.password,
+        isRememberMe: values.remember ?? false,
+      }
+      send({type:'LOG_IN', data: params});
+      // console.log('Login Form Values:', values);
+      // const user = await firebaseAuthImpl.logIn({ email: values.username, password: values.password, isRememberMe: values.remember??false });
+      // send({type: 'LOG_IN', value: user});
+      // send('LOGIN_DONE')
     } catch (error) {
+      console.log('catch error here');
       console.error(error);
+      send('LOGIN_FAIL')
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    console.log('===== ON finish Failed:', errorInfo);
   };
 
   return (

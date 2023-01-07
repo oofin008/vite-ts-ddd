@@ -1,11 +1,19 @@
 import { RoutesInterface, RoutePermission } from "./routes";
-import {
-  HomeComponent,
-  AboutComponent,
-  ContactComponent,
-  EntryComponent,
-  NotFoundComponent
-} from '@/views';
+import { lazy } from "react";
+// import {
+//   HomeComponent,
+//   AboutComponent,
+//   ContactComponent,
+//   EntryComponent,
+//   NotFoundComponent,
+// } from '@/views';
+
+// Lazy load Page component to improve loading speed
+const HomeComponent = lazy(() => import('@/views/Home'));
+const AboutComponent = lazy(() => import('@/views/About'));
+const ContactComponent = lazy(() => import('@/views/Contact'));
+const EntryComponent = lazy(() => import('@/views/Entry'));
+const NotFoundComponent = lazy(() => import('@/views/NotFound'));
 
 // can use useRoutes to render the correct component based on the path
 const routes: RoutesInterface[] = [

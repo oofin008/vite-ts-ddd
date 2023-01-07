@@ -7,8 +7,9 @@ const Home = () => {
     <>
       <div className='test-scss'>Home</div>
       <div>secret_56y4TcFwmDscWPrVrpImVuuxv6wCCvFw10JKLOIVVAP</div>
-      <Suspense fallback={<h1>Loading..</h1>}>
 
+      <Suspense fallback={<h1>Loading..</h1>}>
+        <Blog/>
       </Suspense>
     </>
   )
