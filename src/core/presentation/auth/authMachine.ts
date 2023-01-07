@@ -16,6 +16,7 @@ export const authenticationMachine =
       states: {
         checkingIfLoggedIn: {
           invoke: {
+            id: "checkIfLoggedIn",
             src: "checkIfLoggedIn",
             onDone: {
               target: "loggedIn",
