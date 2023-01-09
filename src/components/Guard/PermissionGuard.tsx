@@ -1,14 +1,26 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Alert, Spin } from 'antd'
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine'
 
 export const PermissionGuard = (props: any) => {
   const [state, send, service] = useContext(AuthMachineContext);
   const { isLoginError } = state.context;
+  const [isLoading, setLoading] = useState(true);
+  useEffect(() => {
+    if(
+      state.matches('checkingIfLoggedIn') ||
+      state.matches('loggingIn') ||
+      state.matches('loggingOut')
+    ) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [state]);
 
   return (
     <>
-      {state.matches('checkingIfLoggedIn') && <Spin tip='Loading...' />}
+      {isLoading && <Spin tip='Loading...' />}
       {state.matches('loggedIn') &&
         <div>{props.children}</div>
       }
