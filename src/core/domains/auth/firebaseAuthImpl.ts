@@ -13,6 +13,7 @@ const services = {
   checkIfLoggedIn,
 }
 
+// TODO: refactor this code to factory pattern ??
 async function init(firebaseConfig: FirebaseOptions): Promise<void> {
   const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
@@ -26,7 +27,7 @@ async function checkIfLoggedIn(): Promise<any> {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged((userInfo) => {
       unsubscribe();
-      console.log('checkIfLoggedIn result: ', userInfo);
+      console.log('[firebase] checkIfLoggedIn result: ', userInfo);
       return userInfo ? resolve(userInfo) : reject('not logged in');
     });
   })
@@ -35,10 +36,10 @@ async function checkIfLoggedIn(): Promise<any> {
 async function signUp(params: SignUpParams): Promise<UserCredential | undefined> {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, params.email, params.password);
-    console.log('firebase signup success: ', userCredential);
+    console.log('[firebase] signup success: ', userCredential);
     return userCredential;
   } catch(error) {
-    console.error('firebase signup error: ', error);
+    console.error('[firebase] signup error: ', error);
   }
 }
 
@@ -49,10 +50,10 @@ async function logIn(params: SignInParams): Promise<UserCredential | undefined> 
     // by default: firebase use LocalStorage to store
     await setPersistence(auth, (isRememberMe ? browserLocalPersistence : browserSessionPersistence));
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log('firebase login success: ', userCredential);
+    console.log('[firebase] login success: ', userCredential);
     return userCredential;
   } catch(error) {
-    console.error('frebase login error: ', error);
+    console.error('[frebase] login error: ', error);
     throw error;
   }
 }
@@ -60,9 +61,9 @@ async function logIn(params: SignInParams): Promise<UserCredential | undefined> 
 async function logOut(): Promise<void> {
   try{
     await signOut(auth);
-    console.log('firebase logout success');
+    console.log('[firebase] logout success');
   } catch(error) {
-    console.error('frebase logout error: ', error);
+    console.error('[frebase] logout error: ', error);
   }
 }
 

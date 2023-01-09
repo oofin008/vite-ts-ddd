@@ -14,12 +14,12 @@ const Login = () => {
     // TODO: check isLoading using Xstate
     // setLoading(true);
     try {
-      const params: SignInParams = {
+      const signInParams: SignInParams = {
         email: values.username,
         password: values.password,
         isRememberMe: values.remember ?? false,
       }
-      send({type:'LOG_IN', data: params});
+      send({type:'LOG_IN', data: {signInParams}});
       // console.log('Login Form Values:', values);
       // const user = await firebaseAuthImpl.logIn({ email: values.username, password: values.password, isRememberMe: values.remember??false });
       // send({type: 'LOG_IN', value: user});
