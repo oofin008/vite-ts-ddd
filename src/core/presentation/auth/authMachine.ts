@@ -15,6 +15,7 @@ export const authenticationMachine =
       initial: "checkingIfLoggedIn",
       states: {
         checkingIfLoggedIn: {
+          tags: ['loading'],
           invoke: {
             id: "checkIfLoggedIn",
             src: "checkIfLoggedIn",
@@ -27,6 +28,7 @@ export const authenticationMachine =
           },
         },
         loggingIn: {
+          tags: ['loading'],
           invoke: {
             src: "firebaseLogin",
             id: "firebaseLogin",
@@ -47,6 +49,7 @@ export const authenticationMachine =
           },
         },
         loggingOut: {
+          tags: ['loading'],
           invoke: {
             src: "firebaseLogout",
             id: "firebaseLogout",
