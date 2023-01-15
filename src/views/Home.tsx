@@ -12,10 +12,10 @@ const Home = () => {
       <div className='test-scss'>Home</div>
       {state.matches('idle') && <p>fetch idle</p>}
       {state.matches('pending') && <p>fetching</p>}
-      {state.matches('success') && <p>fetch Done {state.context.data}</p>}
-      <button onClick={() => send('FETCH')}>fetch</button>
+      {state.matches('success') && <p>fetch Done {JSON.stringify(state.context.data)}</p>}
+      <button onClick={() => send({type:'FETCH', data: { url: "https://jsonplaceholder.typicode.com/todos/1"}})}>fetch</button>
+      <Blog/>
       <Suspense fallback={<h1>Loading..</h1>}>
-        <Blog/>
       </Suspense>
     </>
   )

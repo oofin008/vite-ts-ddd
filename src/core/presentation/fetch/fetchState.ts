@@ -1,8 +1,8 @@
 
 export type FetchMachineContext = {
   url: string;
-  code: number,
-  data: any;
+  code?: number,
+  data?: any;
 };
 
 export type FetchMachineEventList = 'FETCH' | 'RETRY';
