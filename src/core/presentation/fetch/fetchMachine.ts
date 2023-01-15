@@ -48,11 +48,6 @@ createMachine< FetchMachineContext, FetchMachineEvent>(
       fetchData: (ctx, event) => async (send: Sender<FetchMachineEvent>) => {
         console.log('Fetching: ', {ctx, event});
         return fetch(event.data.url).then((res) => res.json());
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve("response data from fetchMachine");
-          },  3000);
-        })
       },
     },
     actions: {
