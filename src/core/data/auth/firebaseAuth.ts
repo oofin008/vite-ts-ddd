@@ -5,6 +5,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// FIREBASE Project: santi-signins
 const firebaseConfig = {
   apiKey: "AIzaSyA2Y70pjMP7cFn_0TD7qPqOEzqWMFqTCFo",
   authDomain: "santi-signin.firebaseapp.com",
