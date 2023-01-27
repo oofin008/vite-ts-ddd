@@ -3,8 +3,10 @@ import { assign, createMachine, Receiver, Sender } from "xstate";
 import {
   AuthenticationMachineContext,
   AuthenticationMachineEvent,
+  UserDetails,
 } from "./authState";
 import { firebaseAuthImpl } from "@/core/domains/auth/firebaseAuthImpl";
+import { User } from "firebase/auth";
 
 // to visualize state machine use cmd+p >xstate: open inspector
 export const authenticationMachine =
@@ -15,7 +17,7 @@ export const authenticationMachine =
       initial: "checkingIfLoggedIn",
       states: {
         checkingIfLoggedIn: {
-          tags: ['loading'],
+          tags: ["loading"],
           invoke: {
             id: "checkIfLoggedIn",
             src: "checkIfLoggedIn",
@@ -28,7 +30,7 @@ export const authenticationMachine =
           },
         },
         loggingIn: {
-          tags: ['loading'],
+          tags: ["loading"],
           invoke: {
             src: "firebaseLogin",
             id: "firebaseLogin",
@@ -49,25 +51,20 @@ export const authenticationMachine =
           },
         },
         loggingOut: {
-          tags: ['loading'],
+          tags: ["loading"],
           invoke: {
             src: "firebaseLogout",
             id: "firebaseLogout",
-            onDone:
-              {
-                target: "loggedOut",
-              },
-            onError:
-              {
-                target: "loggedIn",
-              },
+            onDone: {
+              target: "loggedOut",
+            },
+            onError: {
+              target: "loggedIn",
+            },
           },
         },
         loggedOut: {
-          entry: [
-            "clearUserDetailsFromContext",
-            "navigateToAuthPage",
-          ],
+          entry: ["clearUserDetailsFromContext", "navigateToAuthPage"],
           on: {
             LOG_IN: {
               target: "loggingIn",
@@ -91,7 +88,7 @@ export const authenticationMachine =
             onReceive: Receiver<AuthenticationMachineEvent>
           ) => {
             console.log("logginIn", { ctx, event });
-            const { signInParams } = event.data;
+            const { signInParams } = event.data as AuthenticationMachineContext;
             if (!signInParams) throw new Error("no signin param");
             return firebaseAuthImpl.logIn(signInParams);
           },
@@ -110,7 +107,16 @@ export const authenticationMachine =
           // should take them to the /auth route
         },
         assignUserDetailsToContext: assign((ctx, event) => {
-          return { userDetails: event.data.userDetails };
+          console.log("[authMachine] assignUserContext: ", { ctx, event });
+          const user = event.data as User;
+
+          const userDetails: UserDetails = {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL,
+          };
+          return { userDetails };
         }),
         clearUserDetailsFromContext: assign((context, event) => {
           return { userDetails: undefined };
