@@ -8,11 +8,8 @@ import { SignInParams } from '@/core/domains/auth/firebaseAuthRepo';
 
 const Login = () => {
   const [ state, send, service ] = useContext(AuthMachineContext)
-  const [isLoading, setLoading] = useState(false);
 
   const onFinish = async (values: any) => {
-    // TODO: check isLoading using Xstate
-    // setLoading(true);
     try {
       const signInParams: SignInParams = {
         email: values.username,
@@ -20,10 +17,6 @@ const Login = () => {
         isRememberMe: values.remember ?? false,
       }
       send({type:'LOG_IN', data: {signInParams}});
-      // console.log('Login Form Values:', values);
-      // const user = await firebaseAuthImpl.logIn({ email: values.username, password: values.password, isRememberMe: values.remember??false });
-      // send({type: 'LOG_IN', value: user});
-      // send('LOGIN_DONE')
     } catch (error) {
       console.log('catch error here');
       console.error(error);
@@ -84,7 +77,7 @@ const Login = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button" loading={isLoading}>
+        <Button type="primary" htmlType="submit" className="login-form-button" loading={state.hasTag("loading")}>
           Log in
         </Button>
         Or <a href="">register now!</a>
