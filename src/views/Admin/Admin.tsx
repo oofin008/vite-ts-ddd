@@ -1,8 +1,15 @@
 import React from 'react'
+import { ManageUser } from '@/components/Admin'
+import { PermissionGuard } from '@/components/Guard'
 
 const Admin = () => {
   return (
-    <div>Admin</div>
+    <>
+      {/* <PermissionGuard> */}
+        <div>Admin</div>
+        <ManageUser />
+      {/* </PermissionGuard> */}
+    </>
   )
 }
 
