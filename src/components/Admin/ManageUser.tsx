@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { PaginationType } from 'antd/lib/transfer/interface';
 
 interface DataType {
   key: string;
@@ -54,6 +55,10 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
+const paginationConfig: PaginationType = {
+  pageSize: 1,
+};
+
 const data: DataType[] = [
   {
     key: '1',
@@ -80,7 +85,7 @@ const ManageUser = () => {
   return (
     <div>
       <h1>ManageUser</h1>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} pagination={paginationConfig} />
     </div>
   )
 }
