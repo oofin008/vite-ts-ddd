@@ -1,5 +1,5 @@
 import { FirebaseApp, FirebaseOptions } from "firebase/app";
-import { UserCredential } from "firebase/auth";
+import { User } from "firebase/auth";
 
 export interface SignInParams {
   email: string;
@@ -13,8 +13,8 @@ export interface SignUpParams extends SignInParams {
 
 export interface IAuthRepo {
   // init(params: FirebaseOptions): Promise<void>;
-  checkIfLoggedIn(): Promise<any>;
-  signUp(params: SignUpParams): Promise<UserCredential | undefined>;
-  logIn(params: SignInParams): Promise<UserCredential | undefined>;
+  checkIfLoggedIn(): Promise<User | Error>;
+  signUp(params: SignUpParams): Promise<User | undefined>;
+  logIn(params: SignInParams): Promise<User | undefined>;
   logOut(): Promise<void>;
 }

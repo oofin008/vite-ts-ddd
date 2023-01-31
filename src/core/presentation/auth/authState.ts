@@ -1,4 +1,5 @@
 import { SignInParams } from "@/core/domains/auth/firebaseAuthRepo";
+import { User, UserCredential } from "firebase/auth";
 
 export type AuthenticationMachineContext = {
   userDetails?: UserDetails;
@@ -6,7 +7,10 @@ export type AuthenticationMachineContext = {
 };
 
 export interface UserDetails {
-  username: string;
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  photoUrl: string | null;
 }
 
 export interface Result {
@@ -19,5 +23,5 @@ export type AuthEventList = 'LOG_IN' | 'LOG_OUT'
 export type AuthenticationMachineEvent =
     {
       type: AuthEventList;
-      data: AuthenticationMachineContext;
+      data: AuthenticationMachineContext | User;
     };
