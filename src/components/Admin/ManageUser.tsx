@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Space, Table, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { PaginationType } from 'antd/lib/transfer/interface';
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import type { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
+import { ListUsersResponse } from '@/core/domains/admin/firebaseAdminRepo';
+import { User } from 'firebase/auth';
 
 interface DataType {
-  key: string;
-  name: string;
-  email: string;
+  id: number;
+  name: string | null;
+  email: string | null;
   tags: string[];
+}
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Record<string, FilterValue | null>;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -55,37 +65,95 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const paginationConfig: PaginationType = {
-  pageSize: 1,
-};
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    email: 'abc@yahoo.com',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    email: '123@gg.com',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    email: 'Wowza123@gman.com',
-    tags: ['cool', 'teacher'],
-  },
-];
-
+function toTableData(data: User[]): DataType[] {
+  console.log('toTableData: ', data);
+  if (!data) {
+    return [];
+  }
+  return data.map((user, index) => {
+    return {
+      id: index,
+      name: user.displayName,
+      email: user.email,
+      tags: ['user'],
+    }
+  })
+}
 
 const ManageUser = () => {
+  const effectControl = useRef(false);
+  const [data, setData] = useState<DataType[]>();
+  const [nextPage, setNextPage] = useState<string>("");
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    }
+  })
+
+  const fetchUser = async () => {
+
+    const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, nextPageToken: nextPage});
+    if (!res) {
+      return;
+    }
+    console.log('fetch user: ', res);
+    const { response, nextPageToken, total } = res as ListUsersResponse;
+    const sanitizeData = toTableData(response);
+    setData(sanitizeData);
+    if (nextPageToken) {
+      setNextPage(nextPageToken)
+    }
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total,
+      }
+    })
+  }
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<DataType> | SorterResult<DataType>[],
+  ) => {
+    console.log('on page change ==>', pagination);
+
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([]);
+    }
+
+  }
+
+  useEffect(() => {
+    console.log('use effect run', effectControl);
+    if(effectControl.current === false) {
+      fetchUser();
+    }
+    return () => {
+      effectControl.current = true;
+    }
+
+  }, [JSON.stringify(tableParams)]);
+
   return (
     <div>
       <h1>ManageUser</h1>
-      <Table columns={columns} dataSource={data} pagination={paginationConfig} />
+      <Table
+        columns={columns}
+        rowKey={(record) => record.id}
+        dataSource={data}
+        pagination={tableParams.pagination}
+        onChange={handleTableChange}
+      />
     </div>
   )
 }

@@ -1,4 +1,3 @@
-import { initializeApp, FirebaseOptions } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -6,16 +5,12 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   setPersistence,
-  Auth,
   User,
   signOut,
   connectAuthEmulator,
 } from "firebase/auth";
 import { firebaseApp } from "@/core/data/auth/firebaseAuth";
 import { IAuthRepo, SignInParams, SignUpParams } from "./firebaseAuthRepo";
-import { useAuthState } from "@/utils/useAuthState";
-import { authenticationMachine } from "@/core/presentation/auth/authMachine";
-import { ServiceMap } from "xstate";
 import { connectFirestoreEmulator, getFirestore } from "@firebase/firestore";
 import {
   getFunctions,
@@ -23,43 +18,7 @@ import {
   httpsCallable,
 } from "@firebase/functions";
 
-const firebase = firebaseApp();
-const auth = getAuth(firebase);
-const db = getFirestore();
-const functions = getFunctions(firebase);
-// use to debug on local with firebase emulators
-connectAuthEmulator(auth, "http://localhost:9099");
-connectFunctionsEmulator(functions, "localhost", 5001);
-connectFirestoreEmulator(db, "localhost", 8080);
-
-const services = {
-  checkIfLoggedIn,
-};
-
-// TODO: refactor this code to factory pattern ??
-async function init(firebaseConfig: FirebaseOptions): Promise<void> {
-  const firebaseApp = initializeApp(firebaseConfig);
-  const auth = getAuth(firebaseApp);
-  authenticationMachine.withConfig({
-    //services here
-    services,
-  });
-}
-
-export async function testFirebaseFunctions(): Promise<any> {
-  const callable = httpsCallable(functions, "createUser");
-  const data = {
-    email: "test@firebase.com",
-    password: "P@ssw0rd",
-    role: "user",
-  };
-  try {
-    const response = await callable(data);
-    console.log("firebase functions res: ", response);
-  } catch (e) {
-    console.log("firebase functions error: ", e);
-  }
-}
+const { firebase, auth, db, functions } = firebaseApp;
 
 async function checkIfLoggedIn(): Promise<User | Error> {
   return new Promise((resolve, reject) => {
