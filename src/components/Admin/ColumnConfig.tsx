@@ -1,14 +1,22 @@
-import { ColumnsType } from "antd/lib/table";
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import type { FilterValue } from 'antd/es/table/interface';
 import { Space, Tag } from 'antd';
 
-interface DataType {
-  key: string;
-  name: string;
-  email: string;
+export interface DataType {
+  id: number;
+  name: string | null;
+  email: string | null;
   tags: string[];
 }
 
-export const columnConfig: ColumnsType<DataType> = [
+export interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Record<string, FilterValue | null>;
+}
+
+export const columnsConfig: ColumnsType<DataType> = [
   {
     title: 'Name',
     dataIndex: 'name',

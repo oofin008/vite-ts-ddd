@@ -5,65 +5,7 @@ import type { FilterValue, SorterResult } from 'antd/es/table/interface';
 import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
 import { ListUsersResponse } from '@/core/domains/admin/firebaseAdminRepo';
 import { User } from 'firebase/auth';
-
-interface DataType {
-  id: number;
-  name: string | null;
-  email: string | null;
-  tags: string[];
-}
-
-interface TableParams {
-  pagination?: TablePaginationConfig;
-  sortField?: string;
-  sortOrder?: string;
-  filters?: Record<string, FilterValue | null>;
-}
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Add Permission</a>
-        <a>Remove Permission</a>
-        <a>Delete User</a>
-      </Space>
-    ),
-  },
-];
+import { DataType, TableParams, columnsConfig } from './ColumnConfig';
 
 function toTableData(data: User[]): DataType[] {
   console.log('toTableData: ', data);
@@ -79,6 +21,8 @@ function toTableData(data: User[]): DataType[] {
     }
   })
 }
+
+// try useCallback to solve useEffect called twice issue
 
 const ManageUser = () => {
   const effectControl = useRef(false);
@@ -148,7 +92,7 @@ const ManageUser = () => {
     <div>
       <h1>ManageUser</h1>
       <Table
-        columns={columns}
+        columns={columnsConfig}
         rowKey={(record) => record.id}
         dataSource={data}
         pagination={tableParams.pagination}
