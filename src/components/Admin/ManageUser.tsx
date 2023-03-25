@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Space, Table, Tag } from 'antd';
-import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import { Table } from 'antd';
+import type { TablePaginationConfig } from 'antd/es/table';
 import type { FilterValue, SorterResult } from 'antd/es/table/interface';
 import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
 import { ListUsersResponse } from '@/core/domains/admin/firebaseAdminRepo';
@@ -8,7 +8,6 @@ import { User } from 'firebase/auth';
 import { DataType, TableParams, columnsConfig } from './ColumnConfig';
 
 function toTableData(data: User[]): DataType[] {
-  console.log('toTableData: ', data);
   if (!data) {
     return [];
   }
@@ -22,12 +21,11 @@ function toTableData(data: User[]): DataType[] {
   })
 }
 
-// try useCallback to solve useEffect called twice issue
+// add loading
 
 const ManageUser = () => {
   const effectControl = useRef(false);
   const [data, setData] = useState<DataType[]>();
-  const [nextPage, setNextPage] = useState<string>("");
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -35,24 +33,23 @@ const ManageUser = () => {
     }
   })
 
-  const fetchUser = async () => {
+  const fetchUser = async (pageNum: number | undefined) => {
 
-    const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, nextPageToken: nextPage});
+    const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, page: pageNum ?? 1});
     if (!res) {
       return;
     }
-    console.log('fetch user: ', res);
-    const { response, nextPageToken, total } = res as ListUsersResponse;
+
+    const { response, total } = res as ListUsersResponse;
     const sanitizeData = toTableData(response);
     setData(sanitizeData);
-    if (nextPageToken) {
-      setNextPage(nextPageToken)
-    }
+
     setTableParams({
       ...tableParams,
       pagination: {
         ...tableParams.pagination,
         total,
+        current: pageNum,
       }
     })
   }
@@ -62,13 +59,8 @@ const ManageUser = () => {
     filters: Record<string, FilterValue | null>,
     sorter: SorterResult<DataType> | SorterResult<DataType>[],
   ) => {
-    console.log('on page change ==>', pagination);
 
-    setTableParams({
-      pagination,
-      filters,
-      ...sorter,
-    });
+    fetchUser(pagination.current);
 
     // `dataSource` is useless since `pageSize` changed
     if (pagination.pageSize !== tableParams.pagination?.pageSize) {
@@ -78,15 +70,13 @@ const ManageUser = () => {
   }
 
   useEffect(() => {
-    console.log('use effect run', effectControl);
     if(effectControl.current === false) {
-      fetchUser();
+      fetchUser(1);
     }
     return () => {
       effectControl.current = true;
     }
-
-  }, [JSON.stringify(tableParams)]);
+  }, []);
 
   return (
     <div>

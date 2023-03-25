@@ -7,10 +7,10 @@ const { firebase, auth, db, functions } = firebaseApp;
 
 async function listUsers(params: ListUsersParams): Promise<ListUsersResponse | Error> {
   const callable = httpsCallable<ListUsersParams, ListUsersResponse>(functions, "listUsers");
-  const { nextPageToken = "", limit = 10 } = params;
+  const { page = 1, limit = 10 } = params;
   const data = {
     limit,
-    nextPageToken,
+    page,
   };
   try {
     const response = await callable(data);

@@ -8,7 +8,7 @@ export interface ListUsersResponse {
 
 export interface ListUsersParams {
   limit: number;
-  nextPageToken: string | undefined;
+  page: number;
 }
 
 export interface IAdminRepo {
