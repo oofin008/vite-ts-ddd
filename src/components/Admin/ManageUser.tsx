@@ -21,10 +21,9 @@ function toTableData(data: User[]): DataType[] {
   })
 }
 
-// add loading
-
 const ManageUser = () => {
   const effectControl = useRef(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DataType[]>();
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -34,6 +33,7 @@ const ManageUser = () => {
   })
 
   const fetchUser = async (pageNum: number | undefined) => {
+    setLoading(true);
 
     const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, page: pageNum ?? 1});
     if (!res) {
@@ -42,8 +42,8 @@ const ManageUser = () => {
 
     const { response, total } = res as ListUsersResponse;
     const sanitizeData = toTableData(response);
-    setData(sanitizeData);
 
+    setData(sanitizeData);
     setTableParams({
       ...tableParams,
       pagination: {
@@ -51,7 +51,8 @@ const ManageUser = () => {
         total,
         current: pageNum,
       }
-    })
+    });
+    setLoading(false);
   }
 
   const handleTableChange = (
@@ -87,6 +88,7 @@ const ManageUser = () => {
         dataSource={data}
         pagination={tableParams.pagination}
         onChange={handleTableChange}
+        loading={loading}
       />
     </div>
   )
