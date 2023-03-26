@@ -35,23 +35,27 @@ const ManageUser = () => {
   const fetchUser = async (pageNum: number | undefined) => {
     setLoading(true);
 
-    const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, page: pageNum ?? 1});
-    if (!res) {
-      return;
-    }
-
-    const { response, total } = res as ListUsersResponse;
-    const sanitizeData = toTableData(response);
-
-    setData(sanitizeData);
-    setTableParams({
-      ...tableParams,
-      pagination: {
-        ...tableParams.pagination,
-        total,
-        current: pageNum,
+    try{
+      const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, page: pageNum ?? 1});
+      if (!res) {
+        return;
       }
-    });
+  
+      const { response, total } = res as ListUsersResponse;
+      const sanitizeData = toTableData(response);
+  
+      setData(sanitizeData);
+      setTableParams({
+        ...tableParams,
+        pagination: {
+          ...tableParams.pagination,
+          total,
+          current: pageNum,
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
     setLoading(false);
   }
 
