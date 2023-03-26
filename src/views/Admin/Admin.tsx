@@ -5,10 +5,10 @@ import { PermissionGuard } from '@/components/Guard'
 const Admin = () => {
   return (
     <>
-      {/* <PermissionGuard> */}
+      <PermissionGuard>
         <div>Admin</div>
         <ManageUser />
-      {/* </PermissionGuard> */}
+      </PermissionGuard>
     </>
   )
 }

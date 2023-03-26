@@ -18,6 +18,7 @@ const Entry = (props: any) => {
       </IfLogout> */}
       <PermissionGuard>
         <Button onClick={() => send("LOG_OUT")}> LogOut</Button>
+        <Button onClick={() => {console.log(state.context)}}>Log Xstate Context</Button>
         <p>{state.value}</p>
       </PermissionGuard>
     </div>
