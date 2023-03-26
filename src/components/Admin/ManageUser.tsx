@@ -1,91 +1,99 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { PaginationType } from 'antd/lib/transfer/interface';
+import React, { useEffect, useRef, useState } from 'react';
+import { Table } from 'antd';
+import type { TablePaginationConfig } from 'antd/es/table';
+import type { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
+import { ListUsersResponse } from '@/core/domains/admin/firebaseAdminRepo';
+import { User } from 'firebase/auth';
+import { DataType, TableParams, columnsConfig } from './ColumnConfig';
 
-interface DataType {
-  key: string;
-  name: string;
-  email: string;
-  tags: string[];
+function toTableData(data: User[]): DataType[] {
+  if (!data) {
+    return [];
+  }
+  return data.map((user, index) => {
+    return {
+      id: index,
+      name: user.displayName,
+      email: user.email,
+      tags: ['user'],
+    }
+  })
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Add Permission</a>
-        <a>Remove Permission</a>
-        <a>Delete User</a>
-      </Space>
-    ),
-  },
-];
-
-const paginationConfig: PaginationType = {
-  pageSize: 1,
-};
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    email: 'abc@yahoo.com',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    email: '123@gg.com',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    email: 'Wowza123@gman.com',
-    tags: ['cool', 'teacher'],
-  },
-];
-
-
 const ManageUser = () => {
+  const effectControl = useRef(false);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<DataType[]>();
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    }
+  })
+
+  const fetchUser = async (pageNum: number | undefined) => {
+    setLoading(true);
+
+    try{
+      const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, page: pageNum ?? 1});
+      if (!res) {
+        return;
+      }
+  
+      const { response, total } = res as ListUsersResponse;
+      const sanitizeData = toTableData(response);
+  
+      setData(sanitizeData);
+      setTableParams({
+        ...tableParams,
+        pagination: {
+          ...tableParams.pagination,
+          total,
+          current: pageNum,
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
+    setLoading(false);
+  }
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<DataType> | SorterResult<DataType>[],
+  ) => {
+
+    fetchUser(pagination.current);
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([]);
+    }
+
+  }
+
+  useEffect(() => {
+    if(effectControl.current === false) {
+      fetchUser(1);
+    }
+    return () => {
+      effectControl.current = true;
+    }
+  }, []);
+
   return (
     <div>
       <h1>ManageUser</h1>
-      <Table columns={columns} dataSource={data} pagination={paginationConfig} />
+      <Table
+        columns={columnsConfig}
+        rowKey={(record) => record.id}
+        dataSource={data}
+        pagination={tableParams.pagination}
+        onChange={handleTableChange}
+        loading={loading}
+      />
     </div>
   )
 }
