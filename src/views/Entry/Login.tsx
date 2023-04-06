@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, notification } from 'antd';
 import { firebaseAuthImpl } from '@/core/domains/auth/firebaseAuthImpl';
 import './login.css';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
@@ -20,7 +20,12 @@ const Login = () => {
     } catch (error) {
       console.log('catch error here');
       console.error(error);
-      send('LOGIN_FAIL')
+      notification.open({
+        message: 'Login error',
+        description: `${error}`,
+        placement: "topRight",
+
+      })
     }
     // setLoading(false);
   };
@@ -34,7 +39,7 @@ const Login = () => {
       name="normal_login"
       className="login-form"
       initialValues={{
-        remember: true,
+        remember: false,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -80,7 +85,7 @@ const Login = () => {
         <Button type="primary" htmlType="submit" className="login-form-button" loading={state.hasTag("loading")}>
           Log in
         </Button>
-        Or <a href="">register now!</a>
+        {/* Or <a href="">register now!</a> */}
       </Form.Item>
     </Form>
   )

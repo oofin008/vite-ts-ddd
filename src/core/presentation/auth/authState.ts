@@ -4,6 +4,8 @@ import { User, UserCredential } from "firebase/auth";
 export type AuthenticationMachineContext = {
   userDetails?: UserDetails;
   signInParams?: SignInParams;
+  isError?: boolean;
+  message?: string;
 };
 
 export interface UserDetails {
@@ -13,12 +15,7 @@ export interface UserDetails {
   photoUrl: string | null;
 }
 
-export interface Result {
-  isError: boolean;
-  message: string;
-}
-
-export type AuthEventList = 'LOG_IN' | 'LOG_OUT'
+export type AuthEventList = 'LOG_IN' | 'LOG_OUT';
 
 export type AuthenticationMachineEvent =
     {

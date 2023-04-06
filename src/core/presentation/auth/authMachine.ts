@@ -1,5 +1,5 @@
 import React from "react";
-import { assign, createMachine, Receiver, Sender } from "xstate";
+import { assign, createMachine, ErrorExecutionEvent, Receiver, Sender } from "xstate";
 import {
   AuthenticationMachineContext,
   AuthenticationMachineEvent,
@@ -7,6 +7,7 @@ import {
 } from "./authState";
 import { firebaseAuthImpl } from "@/core/domains/auth/firebaseAuthImpl";
 import { User } from "firebase/auth";
+import { notification } from "antd";
 
 // to visualize state machine use cmd+p >xstate: open inspector
 export const authenticationMachine =
@@ -39,6 +40,7 @@ export const authenticationMachine =
             },
             onError: {
               target: "loggingOut",
+              actions: ["assignError", "notifyError"],
             },
           },
         },
@@ -121,6 +123,19 @@ export const authenticationMachine =
         clearUserDetailsFromContext: assign((context, event) => {
           return { userDetails: undefined };
         }),
+        assignError: assign((_context, event) => {
+          return {
+            isError: true,
+            message: event.data instanceof Error ? event.data.message : "unknown error",
+          }
+        }),
+        notifyError: (context, event) => {
+          notification.error({
+            message: "Login Error",
+            description: `${context.message}`,
+            placement: 'topRight',
+          });
+        }
       },
     }
   );

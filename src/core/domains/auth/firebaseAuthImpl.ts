@@ -17,6 +17,7 @@ import {
   connectFunctionsEmulator,
   httpsCallable,
 } from "@firebase/functions";
+import { FirebaseError } from "firebase/app";
 
 const { firebase, auth, db, functions } = firebaseApp;
 
@@ -65,8 +66,12 @@ async function logIn(
     console.log("[firebase] login success: ", userCredential);
     return userCredential.user;
   } catch (error) {
-    console.error("[frebase] login error: ", error);
-    throw error;
+    if (error instanceof FirebaseError) {
+      console.error("[firebase] login error: ", error.code);
+      throw new Error(error.code);
+    } else {
+      throw error;
+    }
   }
 }
 
@@ -75,7 +80,7 @@ async function logOut(): Promise<void> {
     await signOut(auth);
     console.log("[firebase] logout success");
   } catch (error) {
-    console.error("[frebase] logout error: ", error);
+    console.error("[firebase] logout error: ", error);
   }
 }
 

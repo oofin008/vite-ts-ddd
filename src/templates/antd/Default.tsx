@@ -5,6 +5,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
 import UserMenu from './UserMenu';
 import './default.less';
+import { AuthContext } from '@/core/types/authentication';
 
 
 // Layout is defined here, 
@@ -12,7 +13,7 @@ import './default.less';
 const Defaultlayout = () => {
   const { Header, Content, Footer } = Layout;
   const location = useLocation();
-  const [state, send, service] = useContext(AuthMachineContext);
+  const [state, send, service] = useContext<AuthContext>(AuthMachineContext);
 
   return (
     <Layout className='layout'>
