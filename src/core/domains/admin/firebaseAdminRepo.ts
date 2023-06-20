@@ -1,5 +1,8 @@
-import { User } from "firebase/auth";
-
+export interface User {
+  id: string;
+  email: string;
+  role: string;
+}
 export interface ListUsersResponse {
   nextPageToken: string;
   response: Array<User>;

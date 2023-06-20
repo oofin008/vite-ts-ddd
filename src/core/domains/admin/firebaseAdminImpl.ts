@@ -1,4 +1,4 @@
-import { httpsCallable, HttpsCallableResult } from "@firebase/functions";
+import { httpsCallable } from "@firebase/functions";
 import { firebaseApp } from "@/core/data/auth/firebaseAuth";
 import { IAdminRepo, ListUsersParams, ListUsersResponse } from "./firebaseAdminRepo";
 import { getAuth } from "firebase/auth";

@@ -3,8 +3,7 @@ import { Table } from 'antd';
 import type { TablePaginationConfig } from 'antd/es/table';
 import type { FilterValue, SorterResult } from 'antd/es/table/interface';
 import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
-import { ListUsersResponse } from '@/core/domains/admin/firebaseAdminRepo';
-import { User } from 'firebase/auth';
+import { User } from '@/core/domains/admin/firebaseAdminRepo';
 import { DataType, TableParams, columnsConfig } from './ColumnConfig';
 
 function toTableData(data: User[]): DataType[] {
@@ -14,9 +13,9 @@ function toTableData(data: User[]): DataType[] {
   return data.map((user, index) => {
     return {
       id: index,
-      name: user.displayName,
+      name: user.email,
       email: user.email,
-      tags: ['user'],
+      tags: [user.role],
     }
   })
 }
@@ -37,11 +36,11 @@ const ManageUser = () => {
 
     try{
       const res = await firebaseAdminImpl.listUsers({limit: tableParams.pagination?.pageSize || 10, page: pageNum ?? 1});
-      if (!res) {
+      if (!res || res instanceof Error) {
         return;
       }
   
-      const { response, total } = res as ListUsersResponse;
+      const { response, total } = res;
       const sanitizeData = toTableData(response);
   
       setData(sanitizeData);

@@ -5,8 +5,8 @@
 - Typescript language
 
 # Environment
-- Node v.17.4.0
-- NPM v.8.3.1
+- Node v.14.20.0
+- NPM v.6.14.17
 
 # Project structure
 - Src
