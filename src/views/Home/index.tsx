@@ -2,7 +2,6 @@ import React from 'react';
 import Blog from '@/components/Blogs/Blog';
 import { useMachine } from '@xstate/react';
 import { fetchMachine } from '@/core/presentation/fetch/fetchMachine';
-import Header from '@/components/Portfolio/Header';
 import { Badge, Calendar } from 'antd';
 import type { BadgeProps } from 'antd';
 import type { Moment } from 'moment';
@@ -41,10 +40,6 @@ const Home = () => {
 
   return (
     <>
-      <Header
-        name='Santi Liwsakphaiboon'
-        description='Software Engineer'
-      />
       <div className='test-scss'>Home</div>
       <Calendar
         dateCellRender={dateRender}
