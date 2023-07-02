@@ -2,7 +2,7 @@ import React from 'react'
 
 const Contact = () => {
   return (
-    <div>Contact</div>
+    <h1 className='animate__animated animate__bounce'>Contact</h1>
   )
 }
 
