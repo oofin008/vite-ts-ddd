@@ -1,11 +1,11 @@
-import React, { Suspense, useContext, useEffect } from 'react';
+import React, { Suspense, useContext } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Layout, Menu, Col, Row, Dropdown, Button, Spin } from 'antd'
 import { UserOutlined } from '@ant-design/icons';
+import { AuthContext } from '@/core/types/authentication';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
 import UserMenu from './UserMenu';
 import './default.less';
-import { AuthContext } from '@/core/types/authentication';
 
 
 // Layout is defined here, 
@@ -35,20 +35,19 @@ const Defaultlayout = () => {
               selectedKeys={[location.pathname]}
             />
           </Col>
-          <Col lg={4} md={5} sm={24} xs={24}>
+          <Col lg={4} md={5} sm={24} xs={24} className='avatar-group'>
             {/* TODO: create utils for state resolver ex. <AuthMatches logout={<Component/>} logIn={<Comp/>} */}
-            <div className='avatar-group'>
+
               {
                 state.matches('loggedOut') &&
                 <Button ghost href='/entry' icon={<UserOutlined />}>Log In</Button>
               }
               {
                 state.matches('loggedIn') &&
-                <Dropdown overlay={<UserMenu />}>
+                <Dropdown overlay={<UserMenu />} className=''>
                   <Button shape='circle' ghost icon={<UserOutlined />}></Button>
                 </Dropdown>
               }
-            </div>
           </Col>
         </Row>
       </Header>
