@@ -1,7 +1,7 @@
 import React, { Suspense, useContext } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Layout, Menu, Col, Row, Dropdown, Button, Spin } from 'antd'
-import { UserOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { AuthContext } from '@/core/types/authentication';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
 import UserMenu from './UserMenu';
@@ -21,7 +21,7 @@ const Defaultlayout = () => {
       <Header className='header'>
         <Row>
           <Col lg={4} md={5} sm={0} xs={0}><div className='logo' /></Col>
-          <Col lg={16} md={14} sm={0} xs={0}>
+          <Col lg={16} md={14} sm={12} xs={12}>
             {/* TODO: Dynamic menu */}
             <Menu
               className='menu'
@@ -35,7 +35,7 @@ const Defaultlayout = () => {
               selectedKeys={[location.pathname]}
             />
           </Col>
-          <Col lg={4} md={5} sm={24} xs={24} className='avatar-group'>
+          <Col lg={4} md={5} sm={12} xs={12} className='avatar-group'>
             {/* TODO: create utils for state resolver ex. <AuthMatches logout={<Component/>} logIn={<Comp/>} */}
 
               {
