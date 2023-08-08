@@ -1,4 +1,4 @@
-import { assign, createMachine, Receiver, Sender } from "xstate";
+import { assign, createMachine, Sender } from "xstate";
 import { FetchMachineContext, FetchMachineEvent } from "./fetchState";
 
 export const fetchMachine =
