@@ -6,7 +6,7 @@ import vitePluginImp from "vite-plugin-imp";
 const path = require("path");
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+const config =  ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
   return defineConfig({
@@ -44,3 +44,5 @@ export default ({ mode }) => {
     }
   });
 };
+
+export default config;
