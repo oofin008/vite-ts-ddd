@@ -1,13 +1,13 @@
 import react from '@vitejs/plugin-react';
-import '@testing-library/jest-dom';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { resolve } from 'path';
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [react(),tsconfigPaths()],
   test: {
-    include: ['**/*.test.tsx'],
     globals: true,
-    setupFiles: './src/test/setup.ts'
+    include: ['**/*.test.tsx'],
+    setupFiles: resolve(__dirname, 'src/test/setup.ts'),
   },
 });
