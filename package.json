@@ -9,6 +9,10 @@
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
+  "engineStrict": true,
+  "engines": {
+    "node": "^16"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@apollo/client": "^3.7.0",
@@ -32,8 +36,8 @@
     "xstate": "^4.32.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/less": "^3.0.3",
     "@types/node": "^18.0.0",
