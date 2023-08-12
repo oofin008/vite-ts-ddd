@@ -6,20 +6,6 @@ import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
 import { User } from '@/core/domains/admin/firebaseAdminRepo';
 import { DataType, TableParams, columnsConfig } from './ColumnConfig';
 
-function toTableData(data: User[]): DataType[] {
-  if (!data) {
-    return [];
-  }
-  return data.map((user, index) => {
-    return {
-      id: index,
-      name: user.email,
-      email: user.email,
-      tags: [user.role],
-    }
-  })
-}
-
 const ManageUser = () => {
   const effectControl = useRef(false);
   const [loading, setLoading] = useState(false);
@@ -63,14 +49,25 @@ const ManageUser = () => {
     filters: Record<string, FilterValue | null>,
     sorter: SorterResult<DataType> | SorterResult<DataType>[],
   ) => {
-
     fetchUser(pagination.current);
-
     // `dataSource` is useless since `pageSize` changed
     if (pagination.pageSize !== tableParams.pagination?.pageSize) {
       setData([]);
     }
+  }
 
+  const toTableData = (data: User[]): DataType[] => {
+    if (!data) {
+      return [];
+    }
+    return data.map((user, index) => {
+      return {
+        id: index,
+        name: user.email,
+        email: user.email,
+        tags: [user.role],
+      }
+    })
   }
 
   useEffect(() => {

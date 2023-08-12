@@ -2,7 +2,7 @@
 import { connectFirestoreEmulator, getFirestore } from "@firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "@firebase/functions";
 import { initializeApp } from "firebase/app";
-import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectAuthEmulator, getAuth} from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,9 +20,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-console.info('[FIREBASE] initialize firebase');
 const firebase = initializeApp(firebaseConfig);
-const auth = getAuth(firebase)
+const auth = getAuth(firebase);
 const db = getFirestore();
 const functions = getFunctions();
 
