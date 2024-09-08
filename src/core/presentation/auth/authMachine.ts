@@ -16,6 +16,7 @@ export const authenticationMachine =
     {
       id: "authentication",
       initial: "checkingIfLoggedIn",
+      predictableActionArguments: true,
       states: {
         checkingIfLoggedIn: {
           tags: ["loading"],

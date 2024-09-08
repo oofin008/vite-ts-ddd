@@ -3,23 +3,26 @@
 - Antd UI
 - React-router-dom Routing management
 - Typescript language
+- Firebase
+- Xstate for state management
+
+# Dependencies Project
+- firebase-admin-ts
+- santi-signin (on firebase console)
 
 # Environment
-- Node v.14.20.0
-- NPM v.6.14.17
+- Node v.18.19.0
+- NPM v.10.2.3
 
 # Project structure
 - Src
   - public --> static asset here
   - routes --> define all routes and page view here
   - templates --> define layout here
-  - utils
+  - utils --> utility functions eg. hooks, helper functions
   - views --> for page view content
   - components --> shared component such as card, shelf etc.
   - core --> define high-level (business logic) code here.
-
-# Test Admin for firebase login (temp gonna delete)
-santi@admin.com P@ssw0rd
 
 # How to add new route
 - create new view in `src/views`

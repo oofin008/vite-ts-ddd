@@ -19,6 +19,10 @@ const config =  ({ mode }) => {
         ],
       }),
     ],
+    server: {
+      strictPort: true,
+      port: 3000,
+    },
     resolve: {
       alias: {
         "@/": path.join(__dirname, "src/"),

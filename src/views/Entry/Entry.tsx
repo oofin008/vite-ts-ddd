@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import Login from './Login'
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine'
 import { Button } from 'antd';

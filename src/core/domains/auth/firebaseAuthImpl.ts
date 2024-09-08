@@ -9,7 +9,7 @@ import {
   signOut,
   connectAuthEmulator,
 } from "firebase/auth";
-import { firebaseApp } from "@/core/data/auth/firebaseAuth";
+import { firebaseApp } from "@/core/data/auth/firebaseApp";
 import { IAuthRepo, SignInParams, SignUpParams } from "./firebaseAuthRepo";
 import { connectFirestoreEmulator, getFirestore } from "@firebase/firestore";
 import {

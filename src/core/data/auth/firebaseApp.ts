@@ -12,6 +12,7 @@ import { connectAuthEmulator, getAuth} from 'firebase/auth';
 const firebaseConfig = {
   apiKey: "AIzaSyA2Y70pjMP7cFn_0TD7qPqOEzqWMFqTCFo",
   authDomain: "santi-signin.firebaseapp.com",
+  databaseURL: "https://santi-signin-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "santi-signin",
   storageBucket: "santi-signin.appspot.com",
   messagingSenderId: "565264047830",
@@ -23,12 +24,12 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 const auth = getAuth(firebase);
 const db = getFirestore();
-const functions = getFunctions();
+const functions = getFunctions(firebase);
 
 // use to debug on local with firebase emulators
-connectAuthEmulator(auth, "http://localhost:9099");
-connectFunctionsEmulator(functions, "localhost", 5001);
-connectFirestoreEmulator(db, "localhost", 8080);
+// connectAuthEmulator(auth, "http://127.0.0.1:9099");
+// connectFunctionsEmulator(functions, "localhost", 5001);
+// connectFirestoreEmulator(db, "localhost", 8080);
 
 export const firebaseApp = {
   firebase,

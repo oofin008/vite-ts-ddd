@@ -11,7 +11,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": "^16"
+    "node": "^18"
   },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",

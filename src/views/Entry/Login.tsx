@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, notification } from 'antd';
-import { firebaseAuthImpl } from '@/core/domains/auth/firebaseAuthImpl';
 import './login.css';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
 import { SignInParams } from '@/core/domains/auth/firebaseAuthRepo';
