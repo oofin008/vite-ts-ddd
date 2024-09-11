@@ -6,6 +6,14 @@
 - Firebase
 - Xstate for state management
 
+# Getting Starts
+- go to firebase-admin-ts
+- run `npm install`
+- run `npm start`
+- come back to this project
+- run `npm install`
+- run `npm run dev`
+
 # Dependencies Project
 - firebase-admin-ts
 - santi-signin (on firebase console)
