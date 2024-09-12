@@ -1,5 +1,7 @@
-import { RoutesInterface, RoutePermission } from "./routes";
+import { Permission } from "@/components/Guard/type";
+import { RoutesInterface } from "./routes";
 import { lazy } from "react";
+import { PermissionGuard } from "@/components/Guard";
 
 // Lazy load Page component to improve loading speed
 const HomeComponent = lazy(() => import('@/views/Home'));
@@ -11,15 +13,21 @@ const NotFoundComponent = lazy(() => import('@/views/NotFound'));
 
 // can use useRoutes to render the correct component based on the path
 const routes: RoutesInterface[] = [
-  { path: '', element: <HomeComponent />, permission: RoutePermission.Public },
-  { path: 'about', element: <AboutComponent />, permission: RoutePermission.Public },
-  { path: 'admin', element: <AdminComponent />, permission: RoutePermission.Admin},
-  { path: 'contact', element: <ContactComponent />, permission: RoutePermission.Admin },
-  { path: 'entry', element: <EntryComponent />, permission: RoutePermission.Public },
-  { path: '*', element: <NotFoundComponent />, permission: RoutePermission.Public },
+  { path: '', element: <HomeComponent />, permission: Permission.PUBLIC },
+  { path: 'about', element: <AboutComponent />, permission: Permission.PUBLIC },
+  { path: 'admin', element: <AdminComponent />, permission: Permission.ADMIN},
+  { path: 'contact', element: <ContactComponent />, permission: Permission.ADMIN },
+  { path: 'entry', element: <EntryComponent />, permission: Permission.PUBLIC },
+  { path: '*', element: <NotFoundComponent />, permission: Permission.PUBLIC },
 ];
 
+const buildRoutes = (routes: RoutesInterface[]) => {
+  return routes.map((route, index) => {
+    return { ...route, element: <PermissionGuard permission={route.permission}>{route.element}</PermissionGuard>};
+  });
+}
+
 // will be use in App.tsx
-export default routes;
+export default buildRoutes(routes);
 
 // TODO: protect route with Admin Permission, if no permission, redirect to no permission page.

@@ -41,6 +41,10 @@
 - go to `src/templates/antd/Default.tsx`
 - in `<Menu />` Component, add new item
 
+# Troubleshot
+- If want to connect to firebase on cloud, comment out connectEmulator code in `src/core/data/auth/firebaseApp.ts`
+
+
 # ENV File
 Env Loading Priorities
 An env file for a specific mode (e.g. .env.production) will take higher priority than a generic one (e.g. .env).

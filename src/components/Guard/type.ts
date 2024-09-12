@@ -2,7 +2,7 @@ import React from "react";
 
 
 export enum Permission {
-  EVERYONE = 0,
+  PUBLIC = 0,
   USER = 1,
   ADMIN =  2,
 }
