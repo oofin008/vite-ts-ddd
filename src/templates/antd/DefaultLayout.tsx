@@ -1,19 +1,32 @@
 import React, { Suspense, useContext } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Layout, Menu, Col, Row, Dropdown, Button, Spin } from 'antd'
-import { MenuFoldOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
-import { AuthContext } from '@/core/types/authentication';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Layout, Menu, Col, Row, Dropdown, Button, Spin, MenuProps } from 'antd'
+import { UserOutlined } from '@ant-design/icons';
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine';
-import UserMenu from './UserMenu';
 import './default.less';
 
 
 // Layout is defined here, 
 // Navbar, Sidebar, Main, Footer should be here
 const Defaultlayout = () => {
+  const [state, send, service] = useContext(AuthMachineContext);
   const { Header, Content, Footer } = Layout;
   const location = useLocation();
-  const [state, send, service] = useContext<AuthContext>(AuthMachineContext);
+  const navigate = useNavigate();
+
+  const onClickMenu: MenuProps['onClick'] = ({ key }) => {
+    if(key === 'LOG_OUT') {
+      send(key);
+      navigate('/');
+    } else {
+      navigate(`/${key}`);
+    }
+  }
+
+  const menuItems: MenuProps['items'] = [
+    { key: 'admin', label: 'Dashboard' },
+    { key: 'LOG_OUT', label: 'Log Out' },
+  ];
 
   return (
     <Layout className='layout'>
@@ -44,7 +57,7 @@ const Defaultlayout = () => {
               }
               {
                 state.matches('loggedIn') &&
-                <Dropdown overlay={<UserMenu />} className=''>
+                <Dropdown menu={{items: menuItems, onClick: onClickMenu }} className=''>
                   <Button shape='circle' ghost icon={<UserOutlined />}></Button>
                 </Dropdown>
               }
