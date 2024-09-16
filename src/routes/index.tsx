@@ -2,6 +2,7 @@ import { Permission } from "@/components/Guard/type";
 import { RoutesInterface } from "./routes";
 import { lazy } from "react";
 import { PermissionGuard } from "@/components/Guard";
+import { NoPermission } from "@/views/NoPermission";
 
 // Lazy load Page component to improve loading speed
 const HomeComponent = lazy(() => import('@/views/Home'));
@@ -16,13 +17,14 @@ const routes: RoutesInterface[] = [
   { path: '', element: <HomeComponent />, permission: Permission.PUBLIC },
   { path: 'about', element: <AboutComponent />, permission: Permission.PUBLIC },
   { path: 'admin', element: <AdminComponent />, permission: Permission.ADMIN},
-  { path: 'contact', element: <ContactComponent />, permission: Permission.ADMIN },
+  { path: 'contact', element: <ContactComponent />, permission: Permission.USER },
   { path: 'entry', element: <EntryComponent />, permission: Permission.PUBLIC },
+  { path: 'nopermission', element: <NoPermission />, permission: Permission.PUBLIC },
   { path: '*', element: <NotFoundComponent />, permission: Permission.PUBLIC },
 ];
 
 const buildRoutes = (routes: RoutesInterface[]) => {
-  return routes.map((route, index) => {
+  return routes.map((route, _i) => {
     return { ...route, element: <PermissionGuard permission={route.permission}>{route.element}</PermissionGuard>};
   });
 }

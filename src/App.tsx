@@ -1,15 +1,14 @@
 import React from 'react';
-import './App.less'
+import '@/App.less'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useMachine } from '@xstate/react';
-import { authenticationMachine, AuthMachineContext } from './core/presentation/auth/authMachine';
-import Defaultlayout from './templates/antd/Default'
-import routes from './routes';
-import { RoutesInterface } from './routes/routes';
+import { authenticationMachine, AuthMachineContext } from '@/core/presentation/auth/authMachine';
+import routes from '@/routes';
+import { RoutesInterface } from '@/routes/routes';
+import Defaultlayout from '@/templates/antd/DefaultLayout';
 
 function App() {
   const [state, send, service] = useMachine(authenticationMachine);
-  // TODO: create interface for authMachine Context and change to object
   const authMachine = [state, send, service];
 
   return (

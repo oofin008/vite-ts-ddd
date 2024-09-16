@@ -11,7 +11,6 @@ const Home = () => {
 
   const getListData = (value: Moment) => {
     let listData;
-    console.log('date get --> ', value.date())
     switch (value.date()) {
       case 8:
         listData = [
@@ -24,7 +23,6 @@ const Home = () => {
   }
 
   const dateRender = (value: Moment) => {
-    console.log('date value: ', value);
     const listData = getListData(value);
 
     return (
