@@ -8,6 +8,7 @@ import {
   User,
   signOut,
   connectAuthEmulator,
+  ParsedToken,
 } from "firebase/auth";
 import { firebaseApp } from "@/core/data/auth/firebaseApp";
 import { IAuthRepo, SignInParams, SignUpParams } from "./firebaseAuthRepo";
@@ -18,6 +19,7 @@ import {
   httpsCallable,
 } from "@firebase/functions";
 import { FirebaseError } from "firebase/app";
+import { Role } from "@/core/types/authentication";
 
 const { firebase, auth, db, functions } = firebaseApp;
 
@@ -84,7 +86,22 @@ async function logOut(): Promise<void> {
   }
 }
 
+async function getRole(): Promise<Role> {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const idToken = await user.getIdTokenResult();
+    const role = idToken.claims.role as Role ?? "";
+    return role;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const firebaseAuthImpl: IAuthRepo = {
+  getRole,
   signUp,
   logIn,
   checkIfLoggedIn,

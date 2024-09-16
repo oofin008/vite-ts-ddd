@@ -1,4 +1,5 @@
 import { SignInParams } from "@/core/domains/auth/firebaseAuthRepo";
+import { Role } from "@/core/types/authentication";
 import { User, UserCredential } from "firebase/auth";
 
 export type AuthenticationMachineContext = {
@@ -6,6 +7,7 @@ export type AuthenticationMachineContext = {
   signInParams?: SignInParams;
   isError?: boolean;
   message?: string;
+  role?: Role;
 };
 
 export interface UserDetails {

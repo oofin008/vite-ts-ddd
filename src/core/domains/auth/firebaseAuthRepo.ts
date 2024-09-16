@@ -1,5 +1,5 @@
-import { FirebaseApp, FirebaseOptions } from "firebase/app";
-import { User } from "firebase/auth";
+import { Role } from "@/core/types/authentication";
+import { ParsedToken, User } from "firebase/auth";
 
 export interface SignInParams {
   email: string;
@@ -14,6 +14,7 @@ export interface SignUpParams extends SignInParams {
 export interface IAuthRepo {
   // init(params: FirebaseOptions): Promise<void>;
   checkIfLoggedIn(): Promise<User | Error>;
+  getRole(): Promise<Role>;
   signUp(params: SignUpParams): Promise<User | undefined>;
   logIn(params: SignInParams): Promise<User | undefined>;
   logOut(): Promise<void>;

@@ -8,3 +8,9 @@ export type IAuthContext<TContext,TEvent extends EventObject,TSentEvent extends 
 ];
 
 export type AuthContext = IAuthContext<AuthenticationMachineContext, AuthenticationMachineEvent, AuthenticationMachineEvent>;
+
+export const ALL_ROLES = ["admin", "user", "moderator"];
+
+type RoleTuple = typeof ALL_ROLES;
+
+export type Role = RoleTuple[number];
