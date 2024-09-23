@@ -1,9 +1,9 @@
-import React, { Suspense, useContext, useEffect } from 'react'
-import { Alert, Spin } from 'antd'
-import { Navigate } from 'react-router-dom';
+import React, { Suspense, useContext } from 'react'
+import { Spin } from 'antd'
 import { AuthMachineContext } from '@/core/presentation/auth/authMachine'
 import { ALL_ROLES, AuthContext } from '@/core/types/authentication';
 import { Permission, PermissionGuardProps } from './type';
+import { Navigate } from 'react-router-dom';
 
 const roleComparer = (role: string | undefined, permission: Permission) => {
   let isAbleToAccess = false;
@@ -23,7 +23,7 @@ const roleComparer = (role: string | undefined, permission: Permission) => {
 }
 
 export const PermissionGuard: React.FC<PermissionGuardProps> = (props) => {
-  const [state, send, service] = useContext<AuthContext>(AuthMachineContext);
+  const [state] = useContext<AuthContext>(AuthMachineContext);
 
   const { permission } = props;
 
@@ -34,7 +34,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = (props) => {
         <Suspense fallback={<Spin tip='loading...' />}>
           {props.children}
         </Suspense>
-        : <div>You are not authorized to access this content.</div>
+        : <Navigate to='/nopermission' />
       )}
       {state.matches('loggedOut') && (permission !== Permission["PUBLIC"] ?
         <div>You are not login, please login to access this content.</div>
@@ -42,7 +42,6 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = (props) => {
           {props.children}
         </Suspense>
       )}
-      {/* {isLoginError && <Alert type="error" message="Login Error" banner closable/>} */}
     </>
   )
 }
