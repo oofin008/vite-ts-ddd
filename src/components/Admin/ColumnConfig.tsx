@@ -35,8 +35,10 @@ export const columnsConfig: ColumnsType<DataType> = [
     render: (_, { tags }) => (
       <>
         {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
+          let color = 'green';
+          if(tag === 'moderator') {
+            color = 'geekblue';
+          } else if (tag === 'admin') {
             color = 'volcano';
           }
           return (

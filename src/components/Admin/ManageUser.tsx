@@ -13,7 +13,7 @@ const ManageUser = () => {
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 10,
+      pageSize: 20,
     }
   })
 
@@ -71,7 +71,7 @@ const ManageUser = () => {
   }
 
   useEffect(() => {
-    if(effectControl.current === false) {
+    if(!effectControl.current) {
       fetchUser(1);
     }
     return () => {
