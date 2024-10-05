@@ -1,5 +1,4 @@
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   browserLocalPersistence,
@@ -7,17 +6,9 @@ import {
   setPersistence,
   User,
   signOut,
-  connectAuthEmulator,
-  ParsedToken,
 } from "firebase/auth";
 import { firebaseApp } from "@/core/data/auth/firebaseApp";
 import { IAuthRepo, SignInParams, SignUpParams } from "./firebaseAuthRepo";
-import { connectFirestoreEmulator, getFirestore } from "@firebase/firestore";
-import {
-  getFunctions,
-  connectFunctionsEmulator,
-  httpsCallable,
-} from "@firebase/functions";
 import { FirebaseError } from "firebase/app";
 import { Role } from "@/core/types/authentication";
 

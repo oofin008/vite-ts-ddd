@@ -2,7 +2,6 @@ import React from 'react';
 import {
   assign,
   createMachine,
-  ErrorExecutionEvent,
   Receiver,
   Sender,
 } from 'xstate';
