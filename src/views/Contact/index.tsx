@@ -9,8 +9,8 @@ const Contact = () => {
   return (
     <>
       <h1 className='animate__animated animate__bounce'>Contact</h1>
-      {/* <UploadForm /> */}
-      <VideoUploader onUploadSuccess={(url) => {setDownloadUrl(url)}}/>
+      <UploadForm />
+      {/* <VideoUploader onUploadSuccess={(url) => {setDownloadUrl(url)}}/> */}
       {/* <VideoTable files={[]}/> */}
       <VideoPreview url={downloadUrl} />
     </>
