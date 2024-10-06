@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import type { UploadFile, UploadProps } from 'antd';
-import { Button, message, Upload } from 'antd';
+import { message, Upload } from 'antd';
 import { firebaseApp } from '@/core/data/auth/firebaseApp';
-import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from '@firebase/storage';
+import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
 import { RcFile } from 'antd/lib/upload';
 
 const { Dragger } = Upload;
 const { storage } = firebaseApp;
 
-const UploadForm: React.FC = () => {
-  const [fileList, setFileList] = useState<any>([]);
+interface VideoUploaderProps {
+  onUploadSuccess: (url: string) => void;
+}
+
+const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess }) => {
 
   const uploadLargeFileByResumable = async (
     file: RcFile,
@@ -41,7 +43,6 @@ const UploadForm: React.FC = () => {
   const handleUpload = async (options: any) => {
     const { onSuccess, onError, file, onProgress } = options;
     console.log('Options:', options);
-    // setUploading(true);
 
     try {
       const downloadURL = await uploadLargeFileByResumable(file, (percent) => {
@@ -50,35 +51,13 @@ const UploadForm: React.FC = () => {
       onSuccess(downloadURL, file);
       console.log('File uploaded successfully:', downloadURL);
       message.success(`${file.name} file uploaded successfully`);
-      // onUploadSuccess(downloadURL);
+      onUploadSuccess(downloadURL);
     } catch (error) {
       onError({ error });
       console.log('Error uploading file:', error);
       message.error(`${file.name} file upload failed.`);
-    } finally {
-      // setUploading(false);
     }
-    // for(let i = 0; i < fileList.length; i++) {
-    //   const file = fileList[i];
-    //   const storageRef = ref(storage, 'images/' + file.name);
-    //   uploadBytes(storageRef, file).then((snapshot) => {
-    //     console.log('Uploaded a blob or file!', snapshot);
-    //   });
-    // }
   }
-  const uploadProps: UploadProps = {
-    fileList,
-    beforeUpload: (file: UploadFile) => {
-      setFileList([...fileList, file]);
-      return false;
-    },
-    onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
-    },
-  };
 
   return (<>
     <Dragger
@@ -99,4 +78,4 @@ const UploadForm: React.FC = () => {
   </>);
 };
 
-export default UploadForm;
+export default VideoUploader;
