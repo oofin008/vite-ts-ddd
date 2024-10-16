@@ -2,7 +2,6 @@ import { Permission } from "@/components/Guard/type";
 import { RoutesInterface } from "./routes";
 import { lazy } from "react";
 import { PermissionGuard } from "@/components/Guard";
-import { NoPermission } from "@/views/NoPermission";
 
 // Lazy load Page component to improve loading speed
 const HomeComponent = lazy(() => import('@/views/Home'));
@@ -11,6 +10,7 @@ const AboutComponent = lazy(() => import('@/views/About'));
 const ContactComponent = lazy(() => import('@/views/Contact'));
 const EntryComponent = lazy(() => import('@/views/Entry'));
 const NotFoundComponent = lazy(() => import('@/views/NotFound'));
+const NoPermission = lazy(() => import('@/views/NoPermission'));
 
 // can use useRoutes to render the correct component based on the path
 const routes: RoutesInterface[] = [

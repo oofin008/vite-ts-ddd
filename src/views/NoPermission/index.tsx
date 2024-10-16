@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Result } from 'antd';
 
-export const NoPermission = () => {
+const NoPermission = () => {
   return (
     <Result
       status="403"
@@ -12,3 +11,5 @@ export const NoPermission = () => {
     />
   )
 }
+
+export default NoPermission;

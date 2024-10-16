@@ -44,6 +44,9 @@
 # Troubleshot
 - If want to connect to firebase on cloud, comment out connectEmulator code in `src/core/data/auth/firebaseApp.ts`
 
+# Deployment
+- run `npm run build`
+- firebase deploy
 
 # ENV File
 Env Loading Priorities
