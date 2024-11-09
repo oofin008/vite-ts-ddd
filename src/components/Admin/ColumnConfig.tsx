@@ -55,8 +55,8 @@ export const columnsConfig: ColumnsType<DataType> = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Add Permission</a>
-        <a>Remove Permission</a>
+        <a>Edit Role</a>
+        <a>Edit Permissions</a>
         <a>Delete User</a>
       </Space>
     ),
