@@ -1,11 +1,11 @@
-import react from "@vitejs/plugin-react";
-import { defineConfig, loadEnv } from "vite";
-import vitePluginImp from "vite-plugin-imp";
+import react from '@vitejs/plugin-react';
+import { defineConfig, loadEnv } from 'vite';
+import vitePluginImp from 'vite-plugin-imp';
 
-const path = require("path");
+const path = require('path');
 
 // https://vitejs.dev/config/
-const config =  ({ mode }) => {
+const config = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
   return defineConfig({
@@ -21,9 +21,20 @@ const config =  ({ mode }) => {
       strictPort: true,
       port: 3000,
     },
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // Suppress "Module level directives cause errors when bundled" warnings
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return;
+          }
+          warn(warning);
+        },
+      },
+    },
     resolve: {
       alias: {
-        "@/": path.join(__dirname, "src/"),
+        '@/': path.join(__dirname, 'src/'),
       },
       // { find: '@', replacement: path.resolve(__dirname, 'src') },
       // fix less import by: @import ~
@@ -41,9 +52,9 @@ const config =  ({ mode }) => {
             // 'menu-dark-color': 'rgba(0, 0, 0, 0.45)',
           },
           javascriptEnabled: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 };
 
