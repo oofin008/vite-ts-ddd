@@ -21,13 +21,13 @@ const AddUserForm: React.FC<AddUserFormProps> = (props) => {
     setIsLoading(true)
     try {
       const values = await form.validateFields()
-      console.log('values: ', values);
+
       await onCreate(values);
       setIsLoading(false);
       form.resetFields();
       setVisible(false);
     } catch (err) {
-      console.error('[Error] create user failed: ', err);
+
       notification.error({
         message: 'Add User Error',
         description: `${(err as Error).message}`,

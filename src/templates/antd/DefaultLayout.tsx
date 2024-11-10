@@ -67,7 +67,7 @@ const Defaultlayout = () => {
 
       <Content style={{ padding: '50px 50px' }}>
         {/* Wrap Outlet inside suspense for lazy loading page views */}
-        <Suspense fallback={<Spin tip='Loading...' />}>
+        <Suspense fallback={<Spin/>}>
           <Outlet />
         </Suspense>
       </Content>

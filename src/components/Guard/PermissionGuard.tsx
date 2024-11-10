@@ -29,7 +29,7 @@ export const PermissionGuard: React.FC<PermissionGuardProps> = (props) => {
 
   return (
     <>
-      {state.hasTag('loading') && <Spin tip='Loading...' />}
+      {state.hasTag('loading') && <Spin/>}
       {state.matches('loggedIn') && (roleComparer(state.context.role, permission) ?
         <div>
           {props.children}

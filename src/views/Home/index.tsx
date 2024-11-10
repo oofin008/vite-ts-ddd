@@ -2,7 +2,7 @@ import React from 'react';
 import Blog from '@/components/Blogs/Blog';
 import { useMachine } from '@xstate/react';
 import { fetchMachine } from '@/core/presentation/fetch/fetchMachine';
-import { Badge, Calendar } from 'antd';
+import { Badge, Button, Calendar } from 'antd';
 import type { BadgeProps } from 'antd';
 import type { Moment } from 'moment';
 
@@ -40,12 +40,11 @@ const Home = () => {
     <>
       <div className='test-scss'>Home</div>
       <Calendar
-        dateCellRender={dateRender}
       />
       {state.matches('idle') && <p>fetch idle</p>}
       {state.matches('pending') && <p>fetching</p>}
       {state.matches('success') && <p>fetch Done {JSON.stringify(state.context.data)}</p>}
-      <button onClick={() => send({ type: 'FETCH', data: { url: "https://jsonplaceholder.typicode.com/todos/1" } })}>fetch</button>
+      <Button onClick={() => send({ type: 'FETCH', data: { url: "https://jsonplaceholder.typicode.com/todos/1" } })}>fetch</Button>
       <Blog />
     </>
   )
