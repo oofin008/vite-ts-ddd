@@ -9,7 +9,7 @@ const Admin = () => {
 
   const handleCreateUser = async (values: CreateUserFields) => {
     console.log('values: ', values);
-    // firebaseAdminImpl.createUser(values)
+    await firebaseAdminImpl.createUser(values);
   }
 
   const handleCancel = () => {

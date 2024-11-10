@@ -1,11 +1,11 @@
 import { httpsCallable } from "@firebase/functions";
 import { firebaseApp } from "@/core/data/auth/firebaseApp";
-import { IAdminRepo, ListUsersParams, ListUsersResponse } from "./firebaseAdminRepo";
+import { CreateUserParams, IAdminRepo, ListUsersParams, ListUsersResponse } from "./firebaseAdminRepo";
 import { getAuth } from "firebase/auth";
 
 const { firebase, auth, db, functions } = firebaseApp;
 
-async function listUsers(params: ListUsersParams): Promise<ListUsersResponse | Error> {
+async function listUsers(params: ListUsersParams): Promise<ListUsersResponse> {
   const callable = httpsCallable<ListUsersParams, ListUsersResponse>(functions, "listUsers");
   const { page = 1, limit = 10 } = params;
   const data = {
@@ -21,18 +21,15 @@ async function listUsers(params: ListUsersParams): Promise<ListUsersResponse | E
   }
 }
 
-async function createUser(): Promise<any> {
+async function createUser(params: CreateUserParams): Promise<boolean> {
   const callable = httpsCallable(functions, "createUser");
-  const data = {
-    email: "",
-    password: "",
-    role: "",
-  };
   try {
-    const response = await callable(data);
-    return response;
+    const response = await callable(params);
+    // return response;
+    return true;
   } catch(e) {
     console.log("firebase functions error: ", e);
+    throw e;
   }
 }
 

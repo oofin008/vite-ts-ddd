@@ -1,3 +1,5 @@
+import { Role } from "@/core/types/authentication";
+
 export interface User {
   id: string;
   email: string;
@@ -14,9 +16,15 @@ export interface ListUsersParams {
   page: number;
 }
 
+export interface CreateUserParams {
+  email: string;
+  password: string;
+  role: Role;
+}
+
 export interface IAdminRepo {
-  listUsers(params: ListUsersParams): Promise<ListUsersResponse | Error>;
-  createUser(): Promise<any>;
+  listUsers(params: ListUsersParams): Promise<ListUsersResponse>;
+  createUser(params: CreateUserParams): Promise<boolean>;
   // updateUser(): Promise<any>; // set user permission;
   // deleteUser(): Promise<any>;
 }

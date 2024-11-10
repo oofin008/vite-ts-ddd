@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Modal, Select } from 'antd';
-import { firebaseAdminImpl } from '@/core/domains/admin/firebaseAdminImpl';
-import { Role } from '@/core/types/authentication';
+import React, { useState } from 'react';
+import { Form, Input, Modal, notification, Select } from 'antd';
+import { CreateUserParams } from '@/core/domains/admin/firebaseAdminRepo';
 
 interface AddUserFormProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  onCreate: (values: CreateUserFields) => void;
+  onCreate: (values: CreateUserFields) => Promise<void>;
 }
 
-export interface CreateUserFields {
-  username: string;
-  email: string;
-  role: Role;
-}
+export type CreateUserFields = CreateUserParams;
 
 const AddUserForm: React.FC<AddUserFormProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,14 +22,21 @@ const AddUserForm: React.FC<AddUserFormProps> = (props) => {
     try {
       const values = await form.validateFields()
       console.log('values: ', values);
-      onCreate(values);
+      await onCreate(values);
+      setIsLoading(false);
+      form.resetFields();
+      setVisible(false);
     } catch (err) {
       console.error('[Error] create user failed: ', err);
+      notification.error({
+        message: 'Add User Error',
+        description: `${(err as Error).message}`,
+        placement: 'topRight',
+      });
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
-    form.resetFields();
-    setVisible(false);
+
+
   };
 
   return (
@@ -43,22 +45,22 @@ const AddUserForm: React.FC<AddUserFormProps> = (props) => {
       okText="Create"
       open={visible}
       onOk={handleSubmit}
-      okButtonProps={{disabled: shouldButtonDisabled}}
+      okButtonProps={{ disabled: shouldButtonDisabled }}
       onCancel={() => setVisible(false)}
       confirmLoading={isLoading}
     >
       <Form form={form} onFinish={handleSubmit}>
         <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: 'Please input your username!', type: 'email' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: 'Please input your email!', type: 'email' }]}
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: 'Please input your email!' }]}
         >
           <Input />
         </Form.Item>
