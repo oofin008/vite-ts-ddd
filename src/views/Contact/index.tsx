@@ -1,6 +1,5 @@
 import React from 'react'
 import VideoUploader from '@/components/ui/VideoUploader'
-import VideoTable from '@/components/ui/VideoTable'
 import VideoPreview from '@/components/ui/VideoPreview'
 import { Space } from 'antd'
 
