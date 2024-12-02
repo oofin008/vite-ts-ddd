@@ -15,61 +15,34 @@ interface VideoUploaderProps {
 }
 
 const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess }) => {
-  const rcFileToBase64 = (file: RcFile): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file); // Read the file as a Base64 string
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        // Remove the metadata prefix (e.g., "data:<mime-type>;base64,")
-        const base64FileBuffer = base64String.split(",")[1];
-        resolve(base64FileBuffer);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  const uploadViaFirebaseFunc = async (
-    file: RcFile,
-    onProgress: (percent: number) => void
-  ): Promise<string> => {
-    try {
-      const fileBuffer = await rcFileToBase64(file);
-      const response = await firebaseAdminImpl.testUpload(fileBuffer);
-      console.log('upload result: ', response);
-      return Promise.resolve("success");
-    } catch (error: any) {
-      throw error;
-    }
-  }
 
   const uploadLargeVideoFile = async (
     file: RcFile,
     onProgress: (percent: number) => void
   ): Promise<void> => {
-    const chunkSize = 5 * 1024 * 1024; // 5MB chunks
+    const chunkSize = 10 * 1024 * 1024; // 10MB chunks
     const totalChunks = Math.ceil(file.size / chunkSize);
   
     console.log(`Uploading ${file.name} in ${totalChunks} chunks...`);
   
     let start = 0;
-    const uploadUrl = await firebaseAdminImpl.testSignUrl();
+    const uploadUrl = await firebaseAdminImpl.getSignedUploadUrl('videos/' + file.name);
   
     for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
-      const end = Math.min(start + chunkSize, file.size) - 1;
+      const end = Math.min(start + chunkSize - 1, file.size-1);
       const chunk = file.slice(start, end + 1);
   
       try {
         const response = await axios.put(uploadUrl, chunk, {
           headers: {
-            "Content-Type": "application/octet-stream",
+            "Content-Type": "video/mp4",
             "Content-Range": `bytes ${start}-${end}/${file.size}`,
+            "Content-Length": `${chunk.size || end - start + 1}`,
           },
           onUploadProgress: (progressEvent) => {
-            const chunkProgress = (progressEvent.loaded / (end - start + 1)) * 100;
-            const overallProgress = ((chunkIndex + progressEvent.loaded / (end - start + 1)) / totalChunks) * 100;
-            console.log(`Chunk Progress: ${chunkProgress.toFixed(2)}%`);
-            onProgress(overallProgress);
+            const progress = ((start + progressEvent.loaded) / file.size) * 100;
+            console.log(`Upload Progress: ${progress.toFixed(2)}%`);
+            onProgress(progress);
           },
           validateStatus: (status) => {
             // Treat 308 as a valid status to continue
@@ -77,6 +50,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess }) => {
           },
         });
   
+        // If the server responds with a 308 status, it means the upload is incomplete
         if (response.status === 308) {
           const range = response.headers['range'];
           if (range) {
@@ -86,7 +60,12 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess }) => {
             continue;
           }
         }
-  
+
+        // If the server responds with a 200 status, it means the upload is complete
+        if(response.status === 200) {
+          console.log('Upload completed successfully');
+          break;
+        }
         console.log(`Chunk ${chunkIndex + 1}/${totalChunks} uploaded successfully.`);
       } catch (error) {
         console.error(`Error uploading chunk ${chunkIndex + 1}:`, error);
@@ -144,6 +123,9 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess }) => {
       await uploadLargeVideoFile(file, (percent) => {
         onProgress({ percent });
       });
+      const downloadURL = await firebaseAdminImpl.getDownloadUrl('videos/' + file.name);
+      onSuccess(downloadURL, file);
+      onUploadSuccess(downloadURL);
     } catch (error) {
       onError({ error });
       console.log('Error uploading file:', error);

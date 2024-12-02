@@ -20,26 +20,23 @@ async function listUsers(params: ListUsersParams): Promise<ListUsersResponse> {
     throw e;
   }
 }
-async function testSignUrl() {
-  const callable = httpsCallable<void, string>(functions, "getSignedUploadUrl");
+
+async function getDownloadUrl(filePath: string): Promise<string> {
+  const callable = httpsCallable<{ filePath: string}, string>(functions, "getDownloadUrl");
   try {
-    const url = await callable();
-    return url.data;
+    const response = await callable({filePath});
+    return response.data;
   } catch(e) {
+    console.log("firebase functions error: ", e);
     throw e;
   }
 }
-
-async function testUpload(fileBuffer: string) {
-  const callable = httpsCallable(functions, "uploadVideo");
+async function getSignedUploadUrl(filePath: string): Promise<string> {
+  const callable = httpsCallable<{ filePath: string}, string>(functions, "getSignedUploadUrl");
   try {
-    const response = await callable({
-      fileBuffer,
-      fileName: 'test-upload-file'
-    });
-    return response;
+    const url = await callable({filePath});
+    return url.data;
   } catch(e) {
-    console.log("firebase functions error: ", e);
     throw e;
   }
 }
@@ -59,6 +56,6 @@ async function createUser(params: CreateUserParams): Promise<boolean> {
 export const firebaseAdminImpl: IAdminRepo = {
   listUsers,
   createUser,
-  testUpload,
-  testSignUrl,
+  getDownloadUrl,
+  getSignedUploadUrl,
 }

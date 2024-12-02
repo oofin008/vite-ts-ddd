@@ -25,8 +25,8 @@ export interface CreateUserParams {
 export interface IAdminRepo {
   listUsers(params: ListUsersParams): Promise<ListUsersResponse>;
   createUser(params: CreateUserParams): Promise<boolean>;
-  testUpload(fileBuffer: string): Promise<any>;
-  testSignUrl(): Promise<string>;
+  getDownloadUrl(filePath: string): Promise<string>;
+  getSignedUploadUrl(filePath: string): Promise<string>;
   // updateUser(): Promise<any>; // set user permission;
   // deleteUser(): Promise<any>;
 }
