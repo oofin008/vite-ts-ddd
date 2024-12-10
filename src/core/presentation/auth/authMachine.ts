@@ -104,12 +104,10 @@ export const authenticationMachine =
         checkIfLoggedIn:
           (ctx, event) => async (send: Sender<AuthenticationMachineEvent>) => {
             // Perform some async check here
-            console.log('[authMachine-service] checkIfLoggedIn: ', { ctx, event });
             return firebaseAuthImpl.checkIfLoggedIn();
           },
         getRole:
           (ctx, event) => async (send: Sender<AuthenticationMachineEvent>) => {
-            console.log('[authMachine-service] getRole: ', { ctx, event });
             return firebaseAuthImpl.getRole();
           },
         firebaseLogin:
@@ -118,7 +116,6 @@ export const authenticationMachine =
             send: Sender<AuthenticationMachineEvent>,
             onReceive: Receiver<AuthenticationMachineEvent>
           ) => {
-            console.log('[authMachine-service] firebaseLogin', { ctx, event });
             const { signInParams } = event.data as AuthenticationMachineContext;
             if (!signInParams) throw new Error('no signin param');
             return firebaseAuthImpl.logIn(signInParams);
@@ -129,13 +126,11 @@ export const authenticationMachine =
             send: Sender<AuthenticationMachineEvent>,
             onReceive: Receiver<AuthenticationMachineEvent>
           ) => {
-            console.log('[authMachine-service] firebaseLogout', { ctx, event });
             return firebaseAuthImpl.logOut();
           },
       },
       actions: {
         assignUserDetailsToContext: assign((ctx, event) => {
-          console.log('[authMachine-action] assignUserContext: ', { ctx, event });
           const user = event.data as User;
 
           const userDetails: UserDetails = {
@@ -147,7 +142,6 @@ export const authenticationMachine =
           return Object.assign(ctx, { userDetails });
         }),
         assingRoleToContext: assign((ctx, event) => {
-          console.log('[authMachine-action] assignRoleContext: ', { ctx, event });
           const role = event.data as Role;
           return Object.assign(ctx, { role });
         }),

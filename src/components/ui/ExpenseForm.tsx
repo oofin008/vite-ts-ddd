@@ -3,7 +3,6 @@ import { Form, Input, DatePicker, Button } from 'antd';
 
 const ExpenseForm: React.FC = () => {
   const onFinish = (values: any) => {
-    console.log('Form values:', values);
     // Add your logic to handle the form submission here
   };
 

@@ -4,12 +4,10 @@ const getSuspender = (promise: Promise<any>) => {
 
   const suspender = promise.then(
     (res) => {
-      console.log({res});
       status = "success";
       response = res;
     },
     (err) => {
-      console.log({err});
       status = "error";
       response = err;
     }

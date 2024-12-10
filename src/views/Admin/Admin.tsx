@@ -8,7 +8,6 @@ const Admin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleCreateUser = async (values: CreateUserFields) => {
-    console.log('values: ', values);
     await firebaseAdminImpl.createUser(values);
   }
 

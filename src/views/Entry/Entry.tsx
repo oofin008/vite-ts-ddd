@@ -6,8 +6,6 @@ import './entry.css';
 
 const Entry = (props: any) => {
   const [state, send, service] = useContext(AuthMachineContext);
-  // console.log('state: =========', state);
-  // console.log('service: =========', service);
 
   return (
     <div className='entry-frame'>

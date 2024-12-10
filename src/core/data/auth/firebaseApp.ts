@@ -30,8 +30,8 @@ const functions = getFunctions(firebase);
 const storage = getStorage(firebase);
 
 // use to debug on local with firebase emulators
-// console.log('process environment: ', process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'development') {
+
+if (import.meta.env.MODE === 'development') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
   connectFunctionsEmulator(functions, 'localhost', 5001);
   connectFirestoreEmulator(db, 'localhost', 8080);

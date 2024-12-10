@@ -18,7 +18,6 @@ async function checkIfLoggedIn(): Promise<User | Error> {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged((userInfo) => {
       unsubscribe();
-      console.log("[firebase] checkIfLoggedIn result: ", userInfo);
       return userInfo ? resolve(userInfo) : reject("not logged in");
     });
   });
@@ -33,7 +32,6 @@ async function signUp(
       params.email,
       params.password
     );
-    console.log("[firebase] signup success: ", userCredential);
     return userCredential.user;
   } catch (error) {
     console.error("[firebase] signup error: ", error);
@@ -56,7 +54,6 @@ async function logIn(
       email,
       password
     );
-    console.log("[firebase] login success: ", userCredential);
     return userCredential.user;
   } catch (error) {
     if (error instanceof FirebaseError) {
@@ -71,7 +68,6 @@ async function logIn(
 async function logOut(): Promise<void> {
   try {
     await signOut(auth);
-    console.log("[firebase] logout success");
   } catch (error) {
     console.error("[firebase] logout error: ", error);
   }

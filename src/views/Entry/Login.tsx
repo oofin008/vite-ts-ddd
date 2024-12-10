@@ -17,7 +17,6 @@ const Login = () => {
       }
       send({type:'LOG_IN', data: {signInParams}});
     } catch (error) {
-      console.log('catch error here');
       console.error(error);
       notification.open({
         message: 'Login error',
@@ -26,11 +25,9 @@ const Login = () => {
 
       })
     }
-    // setLoading(false);
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('===== ON finish Failed:', errorInfo);
   };
 
   return (

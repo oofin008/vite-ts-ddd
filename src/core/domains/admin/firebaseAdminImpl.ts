@@ -16,7 +16,6 @@ async function listUsers(params: ListUsersParams): Promise<ListUsersResponse> {
     const response = await callable(data);
     return response.data;
   } catch(e) {
-    console.log("firebase functions error: ", e);
     throw e;
   }
 }
@@ -27,7 +26,6 @@ async function getDownloadUrl(filePath: string): Promise<string> {
     const response = await callable({filePath});
     return response.data;
   } catch(e) {
-    console.log("firebase functions error: ", e);
     throw e;
   }
 }
@@ -48,7 +46,6 @@ async function createUser(params: CreateUserParams): Promise<boolean> {
     // return response;
     return true;
   } catch(e) {
-    console.log("firebase functions error: ", e);
     throw e;
   }
 }
